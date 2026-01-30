@@ -51,8 +51,12 @@ VERSION=$(cat "$TMPDIR/VERSION")
 mkdir -p "$DOTAGENT_DIR/skills"
 mkdir -p "$DOTAGENT_DIR/agent"
 
-# Copy skills
-cp "$TMPDIR"/skills/*.md "$DOTAGENT_DIR/skills/"
+# Copy skills (each skill is a directory with SKILL.md inside)
+for skill_dir in "$TMPDIR"/skills/*/; do
+  skill_name=$(basename "$skill_dir")
+  mkdir -p "$DOTAGENT_DIR/skills/$skill_name"
+  cp -r "$skill_dir"* "$DOTAGENT_DIR/skills/$skill_name/"
+done
 
 # Copy agent configuration template (only if not already present)
 if [ ! -f "$DOTAGENT_DIR/agent/config.yaml" ]; then

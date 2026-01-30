@@ -83,9 +83,9 @@ dotagent/
 ├── doc/
 │   └── DOTAGENT.md              # Full specification
 ├── skills/
-│   ├── dotagent-bootstrap-SKILL.md
-│   ├── dotagent-onboard-SKILL.md
-│   └── dotagent-upgrade-SKILL.md
+│   ├── dotagent-bootstrap/SKILL.md
+│   ├── dotagent-onboard/SKILL.md
+│   └── dotagent-upgrade/SKILL.md
 └── templates/                   # Reference project structure
 ```
 
