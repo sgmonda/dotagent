@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DOTAGENT is a specification and reference framework (v1.1) that defines how to structure software repositories for effective AI agent collaboration. It is not an application — it contains no executable code, no build system, and no tests. The repository holds markdown specifications, reusable agent skills, and reference templates.
+DOTAGENT is a specification and reference framework that defines how to structure software repositories for effective AI agent collaboration. It is not an application — it contains no executable code, no build system, and no tests. The repository holds markdown specifications, reusable agent skills, and reference templates.
 
 The specification is written in English.
 

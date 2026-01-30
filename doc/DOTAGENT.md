@@ -1,4 +1,4 @@
-# DOTAGENT v1.1
+# DOTAGENT {DOTAGENT_VERSION}
 
 ## Specification for AI Agent-Managed Repositories
 
@@ -87,7 +87,7 @@ Dedicated configuration for AI agents:
 The `.agent/config.yaml` file defines the project configuration in a structured way:
 
 ```yaml
-version: "1.1"
+version: "<project version>"
 
 project:
   name: "<project name>"
