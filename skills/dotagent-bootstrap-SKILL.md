@@ -230,6 +230,22 @@ conventions:
     constants: "SCREAMING_SNAKE_CASE"
 ```
 
+### Deno + Fresh
+```yaml
+commands:
+  build: "deno task build"
+  test: "deno test"
+  test_single: "deno test {file}"
+  lint: "deno lint"
+  format: "deno fmt"
+  type_check: "deno check src/"
+conventions:
+  naming:
+    files: "kebab-case"
+    functions: "camelCase"
+    constants: "SCREAMING_SNAKE_CASE"
+```
+
 ---
 
 ## Generation Process

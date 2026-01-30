@@ -6,7 +6,6 @@
 
 **A standard for structuring software repositories optimized for AI agent collaboration.**
 
-[![Spec](https://img.shields.io/badge/spec-v1.2-blue?style=flat-square)](doc/DOTAGENT.md)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
 </div>
@@ -68,7 +67,7 @@ Then ask your agent:
 
 The first run installs everything and scaffolds project template files (`AGENTS.md`, `docs/`, etc.). Subsequent runs only update skills and agent configuration.
 
-Supported stacks: **Python + FastAPI** · **Go + Gin** · **TypeScript + Node** · **Rust** · **Java + Spring**
+Supported stacks: **Python + FastAPI** · **Go + Gin** · **TypeScript + Node** · **Deno + Fresh** · **Rust** · **Java + Spring**
 
 > [!NOTE]
 > The `/dotagent-onboard` skill may be automatically loaded by your agent on startup or when addressing a complex task. It can also be invoked manually at any time.

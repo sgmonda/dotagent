@@ -47,6 +47,7 @@ find . -type f -name "*.md" | head -20
 # - go.mod → Go
 # - Cargo.toml → Rust
 # - pom.xml, build.gradle → Java
+# - deno.json, deno.jsonc → Deno
 # - Gemfile → Ruby
 
 # 3. Test status
@@ -177,6 +178,15 @@ Read:
   - dependencies
 ```
 
+### Deno
+```
+Detect: deno.json, deno.jsonc
+Read:
+  - tasks (build, test, dev)
+  - imports (import map)
+  - compilerOptions
+```
+
 ---
 
 ## Inferred Commands by Stack
@@ -193,6 +203,7 @@ If there is no explicit config, use defaults:
 | Rust | `cargo test` | `cargo clippy` | `cargo build` |
 | Java (Maven) | `mvn test` | `mvn checkstyle:check` | `mvn package` |
 | Java (Gradle) | `./gradlew test` | `./gradlew check` | `./gradlew build` |
+| Deno | `deno test` | `deno lint` | `deno task build` |
 
 ---
 
