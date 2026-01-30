@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 DOTAGENT is a specification and reference framework (v1.0) that defines how to structure software repositories for effective AI agent collaboration. It is not an application — it contains no executable code, no build system, and no tests. The repository holds markdown specifications, reusable agent skills, and reference templates.
 
-The specification is written primarily in Spanish with English code examples.
+The specification is written in English.
 
 ## Repository Structure
 
@@ -26,4 +26,4 @@ The specification is written primarily in Spanish with English code examples.
 
 ## Working in This Repository
 
-There are no build, test, or lint commands. All content is markdown and JSON configuration. Changes should maintain consistency with the specification structure and the bilingual (Spanish prose, English code) convention.
+There are no build, test, or lint commands. All content is markdown and JSON configuration. Changes should maintain consistency with the specification structure.

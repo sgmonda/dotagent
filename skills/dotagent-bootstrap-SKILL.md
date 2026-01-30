@@ -1,48 +1,48 @@
 ---
 name: dotagent-bootstrap
-description: Inicializa un proyecto nuevo siguiendo DOTAGENT v1.0. Crea estructura de directorios, configuración para agentes, documentación arquitectónica y módulo de ejemplo con TDD.
+description: Initializes a new project following DOTAGENT v1.0. Creates directory structure, agent configuration, architectural documentation, and an example module with TDD.
 ---
 
-# AGENTIC-BOOTSTRAP
+# DOTAGENT-BOOTSTRAP
 
-Skill para inicializar proyectos optimizados para desarrollo con agentes de IA.
+Skill for initializing projects optimized for development with AI agents.
 
-## Cuándo Usar
+## When to Use
 
-- Usuario pide crear un proyecto nuevo
-- Usuario quiere estructurar un proyecto existente para agentes
-- Palabras clave: "nuevo proyecto", "inicializar", "bootstrap", "crear proyecto", "setup"
+- User asks to create a new project
+- User wants to structure an existing project for agents
+- Keywords: "new project", "initialize", "bootstrap", "create project", "setup"
 
-## Información Requerida
+## Required Information
 
-Antes de generar, necesitas saber:
+Before generating, you need to know:
 
-1. **Stack tecnológico**:
-   - Lenguaje y versión
-   - Framework principal
-   - Base de datos (si aplica)
-   - ORM/query builder (si aplica)
-   - Framework de testing
+1. **Technology stack**:
+   - Language and version
+   - Main framework
+   - Database (if applicable)
+   - ORM/query builder (if applicable)
+   - Testing framework
 
-2. **Dominio/propósito** del proyecto
+2. **Domain/purpose** of the project
 
-3. **Nombre del proyecto**
+3. **Project name**
 
-Si el usuario no proporciona esta información, pregunta de forma concisa:
+If the user does not provide this information, ask concisely:
 
 ```
-Para crear el proyecto necesito:
-- Stack: ¿Lenguaje + framework + DB?
-- Dominio: ¿Qué problema resuelve?
-- Nombre: ¿Cómo se llama el proyecto?
+To create the project I need:
+- Stack: Language + framework + DB?
+- Domain: What problem does it solve?
+- Name: What is the project called?
 ```
 
 ---
 
-## Estructura a Generar
+## Structure to Generate
 
 ```
-<proyecto>/
+<project>/
 ├── .agent/
 │   ├── config.yaml
 │   ├── commands/
@@ -61,7 +61,7 @@ Para crear el proyecto necesito:
 │   └── invariants/
 │       └── INVARIANTS.md
 ├── src/
-│   └── <módulo-ejemplo>/
+│   └── <example-module>/
 │       ├── AGENTS.md
 │       ├── handler.<ext>
 │       └── handler.test.<ext>
@@ -77,12 +77,12 @@ Para crear el proyecto necesito:
 ├── AGENTS.md
 ├── README.md
 ├── .gitignore
-└── <archivo-config-proyecto>
+└── <project-config-file>
 ```
 
 ---
 
-## Plantillas por Archivo
+## Templates by File
 
 ### .agent/config.yaml
 
@@ -90,10 +90,10 @@ Para crear el proyecto necesito:
 version: "1.0"
 
 project:
-  name: "{NOMBRE_PROYECTO}"
-  type: "{TIPO: web-application|api|library|cli|mobile}"
-  primary_language: "{LENGUAJE}"
-  
+  name: "{PROJECT_NAME}"
+  type: "{TYPE: web-application|api|library|cli|mobile}"
+  primary_language: "{LANGUAGE}"
+
 stack:
   runtime: "{RUNTIME_VERSION}"
   framework: "{FRAMEWORK_VERSION}"
@@ -102,12 +102,12 @@ stack:
   testing: "{TEST_FRAMEWORK}"
 
 commands:
-  build: "{COMANDO_BUILD}"
-  test: "{COMANDO_TEST}"
-  test_single: "{COMANDO_TEST_SINGLE}"
-  lint: "{COMANDO_LINT}"
-  format: "{COMANDO_FORMAT}"
-  type_check: "{COMANDO_TYPES}"
+  build: "{BUILD_COMMAND}"
+  test: "{TEST_COMMAND}"
+  test_single: "{TEST_SINGLE_COMMAND}"
+  lint: "{LINT_COMMAND}"
+  format: "{FORMAT_COMMAND}"
+  type_check: "{TYPE_CHECK_COMMAND}"
 
 paths:
   source: "src/"
@@ -115,12 +115,12 @@ paths:
 
 conventions:
   naming:
-    files: "{CONVENCIÓN_ARCHIVOS}"
-    functions: "{CONVENCIÓN_FUNCIONES}"
-    constants: "{CONVENCIÓN_CONSTANTES}"
-  
+    files: "{FILE_CONVENTION}"
+    functions: "{FUNCTION_CONVENTION}"
+    constants: "{CONSTANT_CONVENTION}"
+
   imports:
-    order: ["{ORDEN_IMPORTS}"]
+    order: ["{IMPORT_ORDER}"]
 
 testing:
   tdd:
@@ -129,7 +129,7 @@ testing:
     recommended_for: []
     optional_for:
       - "scripts/**"
-    
+
     thresholds:
       coverage_required: 80
       test_first_ratio: 80
@@ -138,174 +138,174 @@ boundaries:
   never_modify:
     - ".env*"
     - "*.lock"
-    - "{ARCHIVOS_PROTEGIDOS}"
-  
+    - "{PROTECTED_FILES}"
+
   ask_before_modifying:
-    - "{CONFIG_PRINCIPAL}"
+    - "{MAIN_CONFIG}"
     - ".github/workflows/**"
-    
+
   safe_to_modify:
     - "src/**"
     - "tests/**"
 
 security:
   forbidden_patterns:
-    - pattern: "{PATRÓN_PELIGROSO_1}"
-      message: "{MENSAJE_1}"
+    - pattern: "{DANGEROUS_PATTERN_1}"
+      message: "{MESSAGE_1}"
 ```
 
-### AGENTS.md (raíz)
+### AGENTS.md (root)
 
 ```markdown
 # AGENTS.md
 
-> 🚀 **INICIO DE SESIÓN**
+> **SESSION START**
 >
-> Antes de cualquier tarea, ejecutar:
+> Before any task, run:
 > ```bash
 > git status --short && git log --oneline -1
-> {COMANDO_TEST} 2>&1 | tail -3
+> {TEST_COMMAND} 2>&1 | tail -3
 > ```
-> - Si hay cambios pendientes → informar al usuario
-> - Si hay tests fallando → informar antes de empezar
-> - Si la tarea es compleja o el proyecto es desconocido → ejecutar `/onboard`
+> - If there are pending changes → inform the user
+> - If there are failing tests → inform before starting
+> - If the task is complex or the project is unknown → run `/onboard`
 
-## Identidad
-{NOMBRE_PROYECTO}: {DESCRIPCIÓN_BREVE}
-Stack: {STACK_RESUMIDO}
+## Identity
+{PROJECT_NAME}: {BRIEF_DESCRIPTION}
+Stack: {STACK_SUMMARY}
 
-## Comandos
+## Commands
 \`\`\`bash
-{COMANDO_TEST}              # Todos los tests
-{COMANDO_TEST_SINGLE}       # Test específico
-{COMANDO_LINT}              # Verificar código
-{COMANDO_FORMAT}            # Formatear código
+{TEST_COMMAND}              # All tests
+{TEST_SINGLE_COMMAND}       # Specific test
+{LINT_COMMAND}              # Check code
+{FORMAT_COMMAND}            # Format code
 \`\`\`
 
-## Arquitectura
+## Architecture
 \`\`\`
 src/
-├── {MÓDULO}/       # {PROPÓSITO}
+├── {MODULE}/       # {PURPOSE}
 └── ...
 \`\`\`
 
-## Patrones
+## Patterns
 
-### Manejo de Errores
-\`\`\`{LENGUAJE}
-// ✅ Correcto: retornar resultado tipado
-{EJEMPLO_ERROR_CORRECTO}
+### Error Handling
+\`\`\`{LANGUAGE}
+// ✅ Correct: return typed result
+{CORRECT_ERROR_EXAMPLE}
 
-// ❌ Incorrecto: excepciones no controladas
-{EJEMPLO_ERROR_INCORRECTO}
+// ❌ Incorrect: uncontrolled exceptions
+{INCORRECT_ERROR_EXAMPLE}
 \`\`\`
 
-### Acceso a Datos
-\`\`\`{LENGUAJE}
-// ✅ Correcto: usar cliente/repositorio centralizado
-{EJEMPLO_DATOS_CORRECTO}
+### Data Access
+\`\`\`{LANGUAGE}
+// ✅ Correct: use centralized client/repository
+{CORRECT_DATA_EXAMPLE}
 
-// ❌ Incorrecto: conexiones directas
-{EJEMPLO_DATOS_INCORRECTO}
+// ❌ Incorrect: direct connections
+{INCORRECT_DATA_EXAMPLE}
 \`\`\`
 
-## TDD Obligatorio
+## Mandatory TDD
 
-Para todo código en `src/`:
-1. Escribir test primero
-2. Verificar que falla
-3. Implementar mínimo para que pase
-4. Refactorizar
+For all code in `src/`:
+1. Write test first
+2. Verify it fails
+3. Implement minimum to make it pass
+4. Refactor
 
-## Restricciones
-- NUNCA commitear credenciales o .env
-- NUNCA modificar {ARCHIVOS_CRÍTICOS} sin confirmación
-- NUNCA eliminar tests que pasan
+## Restrictions
+- NEVER commit credentials or .env
+- NEVER modify {CRITICAL_FILES} without confirmation
+- NEVER delete passing tests
 
-## Diagnóstico
-1. Ejecutar `{COMANDO_LINT}`
-2. Ejecutar `{COMANDO_TEST}`
-3. Revisar `docs/architecture/` si hay dudas de diseño
+## Diagnostics
+1. Run `{LINT_COMMAND}`
+2. Run `{TEST_COMMAND}`
+3. Review `docs/architecture/` if there are design questions
 ```
 
 ### docs/architecture/INDEX.md
 
 ```markdown
-# Decisiones Arquitectónicas
+# Architectural Decisions
 
-## Decisiones Activas
+## Active Decisions
 
-| ID | Tema | Impacto | Archivo |
-|----|------|---------|---------|
-| 0001 | Selección de stack | Alto | [0001-stack-selection.md](./0001-stack-selection.md) |
+| ID | Topic | Impact | File |
+|----|-------|--------|------|
+| 0001 | Stack selection | High | [0001-stack-selection.md](./0001-stack-selection.md) |
 
-## Por Área
+## By Area
 - **Stack**: 0001
 ```
 
 ### docs/architecture/0001-stack-selection.md
 
 ```markdown
-# ADR-0001: Selección de Stack Tecnológico
+# ADR-0001: Technology Stack Selection
 
-## Estado
-Aceptado | {FECHA}
+## Status
+Accepted | {DATE}
 
-## Contexto
-{DESCRIPCIÓN_NECESIDAD}
+## Context
+{NEED_DESCRIPTION}
 
-## Decisión
-Usamos:
-- **Lenguaje**: {LENGUAJE} - {RAZÓN}
-- **Framework**: {FRAMEWORK} - {RAZÓN}
-- **Base de datos**: {DATABASE} - {RAZÓN}
-- **Testing**: {TEST_FRAMEWORK} - {RAZÓN}
+## Decision
+We use:
+- **Language**: {LANGUAGE} - {REASON}
+- **Framework**: {FRAMEWORK} - {REASON}
+- **Database**: {DATABASE} - {REASON}
+- **Testing**: {TEST_FRAMEWORK} - {REASON}
 
-## Consecuencias
+## Consequences
 
-### Positivas
-- {BENEFICIO_1}
-- {BENEFICIO_2}
+### Positive
+- {BENEFIT_1}
+- {BENEFIT_2}
 
-### Negativas
-- {LIMITACIÓN_1}
+### Negative
+- {LIMITATION_1}
 
-### Restricciones para el Código
-- {RESTRICCIÓN_1}
-- {RESTRICCIÓN_2}
+### Code Restrictions
+- {RESTRICTION_1}
+- {RESTRICTION_2}
 
-## Alternativas Consideradas
-- **{ALTERNATIVA}**: {POR_QUÉ_NO}
+## Alternatives Considered
+- **{ALTERNATIVE}**: {WHY_NOT}
 ```
 
 ### docs/invariants/INVARIANTS.md
 
 ```markdown
-# Invariantes del Sistema
+# System Invariants
 
-## Seguridad [CRÍTICO]
+## Security [CRITICAL]
 
-### INV-001: Validación de entrada obligatoria
-Toda entrada externa DEBE validarse antes de procesarse.
+### INV-001: Mandatory input validation
+All external input MUST be validated before processing.
 
-### INV-002: Autenticación en endpoints protegidos
-Todo endpoint que modifique datos DEBE verificar autenticación.
+### INV-002: Authentication on protected endpoints
+Every endpoint that modifies data MUST verify authentication.
 
-### INV-003: Sin credenciales en código
-NUNCA hardcodear API keys, passwords o secrets en el código fuente.
+### INV-003: No credentials in code
+NEVER hardcode API keys, passwords, or secrets in source code.
 
-## Datos [CRÍTICO]
+## Data [CRITICAL]
 
-### INV-004: Transacciones para operaciones múltiples
-Operaciones que modifican múltiples registros DEBEN usar transacciones.
+### INV-004: Transactions for multiple operations
+Operations that modify multiple records MUST use transactions.
 
-## Testing [OBLIGATORIO]
+## Testing [MANDATORY]
 
-### INV-005: Tests para lógica de negocio
-Todo archivo en `src/` DEBE tener test correspondiente.
+### INV-005: Tests for business logic
+Every file in `src/` MUST have a corresponding test.
 
-### INV-006: Tests antes de implementación
-En rutas TDD-obligatorias, el test DEBE existir antes del código.
+### INV-006: Tests before implementation
+In TDD-mandatory paths, the test MUST exist before the code.
 ```
 
 ### .agent/personas/tdd-enforcer.md
@@ -313,7 +313,7 @@ En rutas TDD-obligatorias, el test DEBE existir antes del código.
 ```markdown
 ---
 name: tdd-enforcer
-description: Verifica cumplimiento de TDD antes de implementar
+description: Verifies TDD compliance before implementation
 trigger: before_file_create, before_file_modify
 applies_to:
   - "src/**"
@@ -321,32 +321,32 @@ applies_to:
 
 # TDD Enforcer
 
-## Verificaciones
+## Checks
 
-Antes de crear/modificar archivos en `src/`:
+Before creating/modifying files in `src/`:
 
-1. **¿Existe test?**
-   - Archivo: `src/module/handler.{ext}`
-   - Test esperado: `src/module/handler.test.{ext}`
-   - Si NO existe → Crear test primero
+1. **Does the test exist?**
+   - File: `src/module/handler.{ext}`
+   - Expected test: `src/module/handler.test.{ext}`
+   - If NOT → Create test first
 
-2. **¿Test en rojo?**
-   - Ejecutar test
-   - Si PASA → Actualizar test para cubrir nuevo comportamiento
-   - Si FALLA → Proceder con implementación
+2. **Is the test red?**
+   - Run test
+   - If it PASSES → Update test to cover new behavior
+   - If it FAILS → Proceed with implementation
 
-## Mensaje al Usuario
+## Message to User
 
-Si se detecta violación:
+If a violation is detected:
 
-> ⚠️ **TDD Requerido**
+> ⚠️ **TDD Required**
 >
-> Antes de implementar `{archivo}`, necesito:
-> 1. Crear test en `{archivo_test}`
-> 2. Verificar que falla
-> 3. Implementar
+> Before implementing `{file}`, I need to:
+> 1. Create test in `{test_file}`
+> 2. Verify it fails
+> 3. Implement
 >
-> ¿Procedo con este flujo?
+> Shall I proceed with this flow?
 ```
 
 ### .agent/personas/code-reviewer.md
@@ -354,47 +354,47 @@ Si se detecta violación:
 ```markdown
 ---
 name: code-reviewer
-description: Revisa código por calidad, patrones y mejores prácticas
+description: Reviews code for quality, patterns, and best practices
 trigger: on_request
 ---
 
 # Code Reviewer
 
-## Checklist de Revisión
+## Review Checklist
 
-### Correctitud
-- [ ] ¿La lógica es correcta?
-- [ ] ¿Se manejan todos los casos de error?
-- [ ] ¿Hay edge cases no cubiertos?
+### Correctness
+- [ ] Is the logic correct?
+- [ ] Are all error cases handled?
+- [ ] Are there uncovered edge cases?
 
-### Patrones
-- [ ] ¿Sigue los patrones definidos en AGENTS.md?
-- [ ] ¿Respeta las invariantes del sistema?
-- [ ] ¿Usa los helpers/utilidades existentes?
+### Patterns
+- [ ] Does it follow patterns defined in AGENTS.md?
+- [ ] Does it respect system invariants?
+- [ ] Does it use existing helpers/utilities?
 
 ### Testing
-- [ ] ¿Tiene tests?
-- [ ] ¿Los tests cubren casos de éxito y error?
-- [ ] ¿Los tests son legibles?
+- [ ] Does it have tests?
+- [ ] Do tests cover success and error cases?
+- [ ] Are the tests readable?
 
-### Mantenibilidad
-- [ ] ¿Los nombres son descriptivos?
-- [ ] ¿Las funciones tienen responsabilidad única?
-- [ ] ¿Hay código duplicado que debería extraerse?
+### Maintainability
+- [ ] Are names descriptive?
+- [ ] Do functions have single responsibility?
+- [ ] Is there duplicated code that should be extracted?
 
-## Formato de Feedback
+## Feedback Format
 
 ```
-## Resumen
-{resumen breve}
+## Summary
+{brief summary}
 
-## Problemas
-- 🔴 **Crítico**: {descripción}
-- 🟠 **Importante**: {descripción}
-- 🟡 **Sugerencia**: {descripción}
+## Issues
+- 🔴 **Critical**: {description}
+- 🟠 **Important**: {description}
+- 🟡 **Suggestion**: {description}
 
-## Aprobación
-{Aprobado | Requiere cambios | Bloqueado}
+## Approval
+{Approved | Requires changes | Blocked}
 ```
 ```
 
@@ -403,36 +403,36 @@ trigger: on_request
 ```markdown
 ---
 name: security-auditor
-description: Audita código por vulnerabilidades de seguridad
+description: Audits code for security vulnerabilities
 trigger: pre_commit
 ---
 
 # Security Auditor
 
-## Verificaciones
+## Checks
 
 ### Secrets
-- [ ] ¿Hay API keys hardcodeadas?
-- [ ] ¿Hay passwords en el código?
-- [ ] ¿Se usan variables de entorno correctamente?
+- [ ] Are there hardcoded API keys?
+- [ ] Are there passwords in the code?
+- [ ] Are environment variables used correctly?
 
 ### Injection
-- [ ] ¿Las queries usan parámetros/prepared statements?
-- [ ] ¿Se sanitiza input para comandos del sistema?
+- [ ] Do queries use parameters/prepared statements?
+- [ ] Is input sanitized for system commands?
 
-### Autenticación
-- [ ] ¿Los endpoints protegidos verifican auth?
-- [ ] ¿Se validan permisos/roles?
+### Authentication
+- [ ] Do protected endpoints verify auth?
+- [ ] Are permissions/roles validated?
 
-### Validación
-- [ ] ¿Se valida toda entrada externa?
-- [ ] ¿Se validan tipos y rangos?
+### Validation
+- [ ] Is all external input validated?
+- [ ] Are types and ranges validated?
 
-## Severidades
+## Severities
 
-- 🔴 **CRÍTICO**: Bloquea commit (secrets, SQL injection)
-- 🟠 **ALTO**: Requiere justificación
-- 🟡 **MEDIO**: Warning
+- 🔴 **CRITICAL**: Blocks commit (secrets, SQL injection)
+- 🟠 **HIGH**: Requires justification
+- 🟡 **MEDIUM**: Warning
 ```
 
 ### .agent/commands/commit.md
@@ -440,10 +440,10 @@ trigger: pre_commit
 ```markdown
 ---
 name: commit
-description: Crear commit siguiendo convenciones
+description: Create commit following conventions
 ---
 
-# Formato
+# Format
 
 ```
 <type>(<scope>): <description>
@@ -453,20 +453,20 @@ description: Crear commit siguiendo convenciones
 [footer]
 ```
 
-## Tipos
-- feat: Nueva funcionalidad
-- fix: Corrección de bug
-- refactor: Refactorización
+## Types
+- feat: New feature
+- fix: Bug fix
+- refactor: Refactoring
 - test: Tests
-- docs: Documentación
-- chore: Mantenimiento
+- docs: Documentation
+- chore: Maintenance
 
-## Proceso
+## Process
 
-1. Verificar que tests pasan
-2. Ejecutar lint
-3. Crear commit con mensaje descriptivo
-4. Scope = módulo afectado
+1. Verify that tests pass
+2. Run lint
+3. Create commit with descriptive message
+4. Scope = affected module
 ```
 
 ### .agent/commands/test-module.md
@@ -474,142 +474,142 @@ description: Crear commit siguiendo convenciones
 ```markdown
 ---
 name: test-module
-description: Ejecuta tests de un módulo específico
+description: Run tests for a specific module
 ---
 
-# Uso
+# Usage
 
-Cuando el usuario pida testear un módulo:
+When the user asks to test a module:
 
-1. Identificar módulo
-2. Ejecutar: `{COMANDO_TEST} src/{módulo}/`
-3. Reportar resultados
-4. Si hay fallos, ofrecer corregir
+1. Identify the module
+2. Run: `{TEST_COMMAND} src/{module}/`
+3. Report results
+4. If there are failures, offer to fix
 ```
 
 ### README.md
 
 ```markdown
-# {NOMBRE_PROYECTO}
+# {PROJECT_NAME}
 
-{DESCRIPCIÓN}
+{DESCRIPTION}
 
 ## Stack
 
-- **Lenguaje**: {LENGUAJE}
+- **Language**: {LANGUAGE}
 - **Framework**: {FRAMEWORK}
-- **Base de datos**: {DATABASE}
+- **Database**: {DATABASE}
 - **Testing**: {TEST_FRAMEWORK}
 
-## Desarrollo
+## Development
 
-### Requisitos
-- {REQUISITO_1}
-- {REQUISITO_2}
+### Requirements
+- {REQUIREMENT_1}
+- {REQUIREMENT_2}
 
 ### Setup
 \`\`\`bash
-{COMANDOS_SETUP}
+{SETUP_COMMANDS}
 \`\`\`
 
-### Comandos
+### Commands
 \`\`\`bash
-{COMANDO_BUILD}    # Build
-{COMANDO_TEST}     # Tests
-{COMANDO_LINT}     # Lint
+{BUILD_COMMAND}    # Build
+{TEST_COMMAND}     # Tests
+{LINT_COMMAND}     # Lint
 \`\`\`
 
-## Estructura
+## Structure
 
 ```
-src/           # Código fuente (tests unitarios junto al código)
-tests/         # Tests de integración y e2e
-docs/          # Documentación
-.agent/        # Configuración para agentes IA
+src/           # Source code (unit tests alongside code)
+tests/         # Integration and e2e tests
+docs/          # Documentation
+.agent/        # AI agent configuration
 ```
 
-## Documentación
+## Documentation
 
-- [Decisiones arquitectónicas](./docs/architecture/INDEX.md)
-- [Invariantes del sistema](./docs/invariants/INVARIANTS.md)
+- [Architectural decisions](./docs/architecture/INDEX.md)
+- [System invariants](./docs/invariants/INVARIANTS.md)
 
 ---
 
-## 🤖 DOTAGENT
+## DOTAGENT
 
-Este proyecto sigue [DOTAGENT](https://github.com/...) v1.0, una especificación para repositorios optimizados para desarrollo con agentes de IA.
+This project follows [DOTAGENT](https://github.com/...) v1.0, a specification for repositories optimized for AI agent development.
 
-### ¿Qué significa esto?
+### What does this mean?
 
-El repositorio está estructurado para que agentes como Claude Code, Cursor, Copilot y otros puedan:
+The repository is structured so that agents like Claude Code, Cursor, Copilot, and others can:
 
-- **Orientarse rápidamente** leyendo `AGENTS.md`
-- **Entender decisiones pasadas** consultando `docs/architecture/`
-- **Respetar reglas inviolables** definidas en `docs/invariants/`
-- **Seguir patrones consistentes** documentados con ejemplos
-- **Trabajar con TDD** como metodología por defecto
+- **Orient quickly** by reading `AGENTS.md`
+- **Understand past decisions** by consulting `docs/architecture/`
+- **Respect inviolable rules** defined in `docs/invariants/`
+- **Follow consistent patterns** documented with examples
+- **Work with TDD** as the default methodology
 
-### Archivos clave para agentes
+### Key files for agents
 
-| Archivo | Propósito |
-|---------|-----------|
-| `AGENTS.md` | Reglas, comandos y patrones del proyecto |
-| `.agent/config.yaml` | Configuración estructurada (stack, comandos, límites) |
-| `docs/architecture/` | ADRs - Por qué se tomaron las decisiones |
-| `docs/invariants/` | Reglas que nunca deben violarse |
-| `src/*/AGENTS.md` | Reglas específicas por módulo |
+| File | Purpose |
+|------|---------|
+| `AGENTS.md` | Project rules, commands, and patterns |
+| `.agent/config.yaml` | Structured configuration (stack, commands, limits) |
+| `docs/architecture/` | ADRs - Why decisions were made |
+| `docs/invariants/` | Rules that must never be violated |
+| `src/*/AGENTS.md` | Module-specific rules |
 
-### Para humanos trabajando con agentes
+### For humans working with agents
 
-1. **Antes de pedir cambios grandes**, asegúrate de que el agente ha leído `AGENTS.md`
-2. **Si el agente hace algo incorrecto**, probablemente falta documentarlo en los patrones
-3. **Las decisiones arquitectónicas** van en `docs/architecture/`, no en comentarios sueltos
-4. **Los tests van primero** (TDD) - el agente está configurado para seguir este flujo
+1. **Before requesting large changes**, make sure the agent has read `AGENTS.md`
+2. **If the agent does something wrong**, it probably needs to be documented in the patterns
+3. **Architectural decisions** go in `docs/architecture/`, not in scattered comments
+4. **Tests come first** (TDD) - the agent is configured to follow this flow
 
-### Para contribuidores
+### For contributors
 
-Si modificas la arquitectura o añades patrones nuevos:
+If you modify the architecture or add new patterns:
 
-1. Crear ADR en `docs/architecture/` explicando el porqué
-2. Actualizar `AGENTS.md` con ejemplos de código si aplica
-3. Añadir invariantes en `docs/invariants/` si hay reglas nuevas
-4. Los agentes futuros (y humanos) te lo agradecerán
+1. Create an ADR in `docs/architecture/` explaining why
+2. Update `AGENTS.md` with code examples if applicable
+3. Add invariants in `docs/invariants/` if there are new rules
+4. Future agents (and humans) will thank you
 ```
 
-### Módulo de Ejemplo
+### Example Module
 
-Crear un módulo básico que demuestre la estructura:
+Create a basic module that demonstrates the structure:
 
-`src/<módulo>/AGENTS.md`:
+`src/<module>/AGENTS.md`:
 ```markdown
-# Módulo: {MÓDULO}
+# Module: {MODULE}
 
-## Propósito
-{DESCRIPCIÓN_MÓDULO}
+## Purpose
+{MODULE_DESCRIPTION}
 
-## Archivos
-- `handler.{ext}`: Lógica principal
+## Files
+- `handler.{ext}`: Main logic
 - `handler.test.{ext}`: Tests
 
-## Patrones específicos
-{PATRONES_DEL_MÓDULO}
+## Specific Patterns
+{MODULE_PATTERNS}
 ```
 
-`src/<módulo>/handler.{ext}`:
+`src/<module>/handler.{ext}`:
 ```
-// Implementación mínima de ejemplo
-// El agente debe expandir según necesidades
+// Minimal example implementation
+// The agent should expand as needed
 ```
 
-`src/<módulo>/handler.test.{ext}`:
+`src/<module>/handler.test.{ext}`:
 ```
-// Test de ejemplo siguiendo TDD
-// Estructura: describe > it > arrange/act/assert
+// Example test following TDD
+// Structure: describe > it > arrange/act/assert
 ```
 
 ---
 
-## Mappings de Stack
+## Stack Mappings
 
 ### Python + FastAPI
 ```yaml
@@ -690,36 +690,36 @@ conventions:
 
 ---
 
-## Proceso de Generación
+## Generation Process
 
-1. **Recibir parámetros** (stack, dominio, nombre)
-2. **Seleccionar mapping** según stack
-3. **Crear directorios** en orden
-4. **Generar archivos** sustituyendo placeholders
-5. **Crear módulo de ejemplo** con test
-6. **Verificar** estructura generada
-7. **Reportar** archivos creados
+1. **Receive parameters** (stack, domain, name)
+2. **Select mapping** based on stack
+3. **Create directories** in order
+4. **Generate files** replacing placeholders
+5. **Create example module** with test
+6. **Verify** generated structure
+7. **Report** created files
 
-## Output Esperado
+## Expected Output
 
 ```
-✅ Proyecto {nombre} creado con DOTAGENT v1.0
+✅ Project {name} created with DOTAGENT v1.0
 
-Archivos generados:
+Generated files:
 - .agent/config.yaml
 - .agent/commands/*.md
 - .agent/personas/*.md
 - docs/architecture/INDEX.md
 - docs/architecture/0001-stack-selection.md
 - docs/invariants/INVARIANTS.md
-- src/{módulo}/handler.{ext}
-- src/{módulo}/handler.test.{ext}
+- src/{module}/handler.{ext}
+- src/{module}/handler.test.{ext}
 - AGENTS.md
 - README.md
 - .gitignore
 
-Próximos pasos:
-1. Revisar .agent/config.yaml y ajustar si necesario
-2. Ejecutar `{comando_test}` para verificar setup
-3. Comenzar desarrollo siguiendo TDD
+Next steps:
+1. Review .agent/config.yaml and adjust if needed
+2. Run `{test_command}` to verify setup
+3. Start development following TDD
 ```

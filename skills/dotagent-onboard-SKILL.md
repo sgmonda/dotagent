@@ -1,47 +1,47 @@
 ---
 name: dotagent-onboard
-description: Analiza un proyecto existente y genera un briefing completo para orientar al agente. Usa al inicio de cada sesión o cuando llegues a un proyecto desconocido.
+description: Analyzes an existing project and generates a complete briefing to orient the agent. Use at the start of each session or when encountering an unknown project.
 ---
 
-# AGENTIC-ONBOARD
+# DOTAGENT-ONBOARD
 
-Skill para orientar agentes en proyectos existentes siguiendo DOTAGENT.
+Skill for orienting agents in existing projects following DOTAGENT.
 
-## Cuándo Usar
+## When to Use
 
-- Inicio de sesión en proyecto desconocido
-- Usuario pide "entiende este proyecto", "onboard", "oriéntate"
-- Antes de hacer cambios significativos en proyecto nuevo
-- Cuando el agente no tiene contexto del proyecto
+- Session start on an unknown project
+- User asks "understand this project", "onboard", "orient yourself"
+- Before making significant changes to a new project
+- When the agent lacks project context
 
-## Proceso de Onboarding
+## Onboarding Process
 
-### Fase 1: Detección de Estructura
+### Phase 1: Structure Detection
 
-Buscar en orden de prioridad:
+Search in priority order:
 
 ```
-1. .agent/config.yaml      → Configuración completa del proyecto
-2. AGENTS.md               → Reglas y patrones
-3. README.md               → Descripción general
-4. docs/architecture/      → Decisiones arquitectónicas
-5. docs/invariants/        → Reglas inviolables
+1. .agent/config.yaml      → Complete project configuration
+2. AGENTS.md               → Rules and patterns
+3. README.md               → General description
+4. docs/architecture/      → Architectural decisions
+5. docs/invariants/        → Inviolable rules
 ```
 
-Si existe `.agent/config.yaml`, el proyecto sigue DOTAGENT.
-Si no existe, inferir información de archivos estándar.
+If `.agent/config.yaml` exists, the project follows DOTAGENT.
+If it doesn't exist, infer information from standard files.
 
-### Fase 2: Análisis del Proyecto
+### Phase 2: Project Analysis
 
-Ejecutar estas verificaciones:
+Run these checks:
 
 ```bash
-# 1. Estructura de directorios
+# 1. Directory structure
 ls -la
 find . -type f -name "*.md" | head -20
 
-# 2. Detectar lenguaje/stack
-# Buscar archivos de configuración característicos:
+# 2. Detect language/stack
+# Look for characteristic configuration files:
 # - package.json → Node/JS/TS
 # - pyproject.toml, requirements.txt → Python
 # - go.mod → Go
@@ -49,104 +49,104 @@ find . -type f -name "*.md" | head -20
 # - pom.xml, build.gradle → Java
 # - Gemfile → Ruby
 
-# 3. Estado de tests
-# Ejecutar comando de test del proyecto (si se conoce)
+# 3. Test status
+# Run the project's test command (if known)
 
-# 4. Estado de git
+# 4. Git status
 git log --oneline -5
 git status --short
 git branch --list
 ```
 
-### Fase 3: Lectura de Documentación
+### Phase 3: Documentation Reading
 
-Leer en este orden (si existen):
+Read in this order (if they exist):
 
-1. **`.agent/config.yaml`**: Extraer stack, comandos, boundaries
-2. **`AGENTS.md`**: Extraer patrones obligatorios y restricciones
-3. **`docs/architecture/INDEX.md`**: Listar ADRs activos
-4. **`docs/invariants/INVARIANTS.md`**: Identificar reglas críticas
-5. **AGENTS.md por módulo**: Si hay que trabajar en módulo específico
+1. **`.agent/config.yaml`**: Extract stack, commands, boundaries
+2. **`AGENTS.md`**: Extract mandatory patterns and restrictions
+3. **`docs/architecture/INDEX.md`**: List active ADRs
+4. **`docs/invariants/INVARIANTS.md`**: Identify critical rules
+5. **Per-module AGENTS.md**: If working on a specific module
 
-### Fase 4: Generar Briefing
+### Phase 4: Generate Briefing
 
 ---
 
-## Formato del Briefing
+## Briefing Format
 
 ```markdown
-# 🗺️ Briefing del Proyecto
+# Project Briefing
 
-## Identidad
-- **Nombre**: {nombre del proyecto}
-- **Descripción**: {descripción breve}
-- **Stack**: {lenguaje} + {framework} + {database}
+## Identity
+- **Name**: {project name}
+- **Description**: {brief description}
+- **Stack**: {language} + {framework} + {database}
 
-## Estructura
+## Structure
 ```
-{árbol de directorios principales, max 15 líneas}
+{main directory tree, max 15 lines}
 ```
 
-## Comandos Disponibles
+## Available Commands
 ```bash
-{comando_build}    # Build
-{comando_test}     # Tests
-{comando_lint}     # Lint
-{comando_format}   # Format
+{build_command}    # Build
+{test_command}     # Tests
+{lint_command}     # Lint
+{format_command}   # Format
 ```
 
-## Módulos Principales
-| Módulo | Propósito | Tests |
-|--------|-----------|-------|
-| {módulo} | {propósito} | ✅/❌ |
+## Main Modules
+| Module | Purpose | Tests |
+|--------|---------|-------|
+| {module} | {purpose} | ✅/❌ |
 
-## Estado Actual
-- **Branch**: {branch actual}
-- **Último commit**: {mensaje del último commit}
-- **Cambios pendientes**: {archivos modificados}
+## Current Status
+- **Branch**: {current branch}
+- **Last commit**: {last commit message}
+- **Pending changes**: {modified files}
 - **Tests**: {X passing, Y failing}
 
-## Decisiones Arquitectónicas
-| ID | Tema | 
-|----|------|
-| ADR-0001 | {tema} |
-| ADR-0002 | {tema} |
+## Architectural Decisions
+| ID | Topic |
+|----|-------|
+| ADR-0001 | {topic} |
+| ADR-0002 | {topic} |
 
-## Invariantes Críticas
-- 🔴 {invariante crítica 1}
-- 🔴 {invariante crítica 2}
+## Critical Invariants
+- 🔴 {critical invariant 1}
+- 🔴 {critical invariant 2}
 
-## Restricciones
-- NUNCA: {restricción 1}
-- NUNCA: {restricción 2}
-- Confirmar antes de modificar: {archivos protegidos}
+## Restrictions
+- NEVER: {restriction 1}
+- NEVER: {restriction 2}
+- Confirm before modifying: {protected files}
 
-## Alertas
-{si hay tests fallando, cambios sin commit, TODOs críticos, etc.}
+## Alerts
+{if there are failing tests, uncommitted changes, critical TODOs, etc.}
 
 ---
-✅ Onboarding completo. Listo para trabajar.
+✅ Onboarding complete. Ready to work.
 ```
 
 ---
 
-## Detección de Stack (sin config.yaml)
+## Stack Detection (without config.yaml)
 
-Si no existe `.agent/config.yaml`, inferir del proyecto:
+If `.agent/config.yaml` doesn't exist, infer from the project:
 
 ### Node.js / TypeScript
 ```
-Detectar: package.json
-Leer: 
+Detect: package.json
+Read:
   - name, description
   - scripts (build, test, lint)
-  - dependencies principales
+  - main dependencies
 ```
 
 ### Python
 ```
-Detectar: pyproject.toml, setup.py, requirements.txt
-Leer:
+Detect: pyproject.toml, setup.py, requirements.txt
+Read:
   - [project] name, description
   - [tool.pytest], [tool.ruff]
   - dependencies
@@ -154,8 +154,8 @@ Leer:
 
 ### Go
 ```
-Detectar: go.mod
-Leer:
+Detect: go.mod
+Read:
   - module name
   - go version
   - require (dependencies)
@@ -163,25 +163,25 @@ Leer:
 
 ### Rust
 ```
-Detectar: Cargo.toml
-Leer:
+Detect: Cargo.toml
+Read:
   - [package] name, description
   - [dependencies]
 ```
 
 ### Java
 ```
-Detectar: pom.xml, build.gradle
-Leer:
+Detect: pom.xml, build.gradle
+Read:
   - groupId, artifactId
   - dependencies
 ```
 
 ---
 
-## Comandos Inferidos por Stack
+## Inferred Commands by Stack
 
-Si no hay config explícito, usar defaults:
+If there is no explicit config, use defaults:
 
 | Stack | Test | Lint | Build |
 |-------|------|------|-------|
@@ -196,20 +196,20 @@ Si no hay config explícito, usar defaults:
 
 ---
 
-## Análisis de Módulos
+## Module Analysis
 
-Para cada directorio en `src/`:
+For each directory in `src/`:
 
-1. **Contar archivos** de código vs tests
-2. **Detectar AGENTS.md** local (si existe)
-3. **Identificar exports** principales
-4. **Verificar cobertura** de tests
+1. **Count files** of code vs tests
+2. **Detect local AGENTS.md** (if it exists)
+3. **Identify main exports**
+4. **Verify test coverage**
 
 ```markdown
-## Módulos
+## Modules
 
-| Módulo | Archivos | Tests | Cobertura | AGENTS.md |
-|--------|----------|-------|-----------|-----------|
+| Module | Files | Tests | Coverage | AGENTS.md |
+|--------|-------|-------|----------|-----------|
 | users | 5 | 4 | 80% | ✅ |
 | tasks | 8 | 6 | 75% | ✅ |
 | notifications | 3 | 1 | 33% | ❌ |
@@ -217,110 +217,110 @@ Para cada directorio en `src/`:
 
 ---
 
-## Detección de Problemas
+## Problem Detection
 
-Alertar sobre:
+Alert on:
 
-### 🔴 Críticos
-- Tests fallando
-- Archivos de entorno (.env) en git
-- Secrets en código (buscar patrones: API_KEY, password, token)
-- Migraciones pendientes
+### 🔴 Critical
+- Failing tests
+- Environment files (.env) in git
+- Secrets in code (search patterns: API_KEY, password, token)
+- Pending migrations
 
-### 🟠 Importantes  
-- Cobertura de tests < 50%
-- TODOs/FIXMEs en código
-- Dependencias desactualizadas (si es detectable)
-- Archivos muy grandes (> 500 líneas)
+### 🟠 Important
+- Test coverage < 50%
+- TODOs/FIXMEs in code
+- Outdated dependencies (if detectable)
+- Very large files (> 500 lines)
 
-### 🟡 Informativos
-- Branches locales sin merge
-- Cambios sin commit
-- Documentación desactualizada (fechas antiguas en ADRs)
+### 🟡 Informational
+- Local branches without merge
+- Uncommitted changes
+- Outdated documentation (old dates in ADRs)
 
 ---
 
-## Briefing Mínimo (proyecto sin DOTAGENT)
+## Minimal Briefing (project without DOTAGENT)
 
-Si el proyecto no sigue la spec, generar briefing reducido:
+If the project doesn't follow the spec, generate a reduced briefing:
 
 ```markdown
-# 🗺️ Briefing del Proyecto
+# Project Briefing
 
-## Identidad
-- **Nombre**: {inferido de config o directorio}
-- **Stack**: {inferido de archivos de config}
+## Identity
+- **Name**: {inferred from config or directory}
+- **Stack**: {inferred from config files}
 
-## Estructura
+## Structure
 ```
-{árbol básico}
+{basic tree}
 ```
 
-## Comandos (inferidos)
+## Commands (inferred)
 ```bash
-{comandos por defecto del stack}
+{default stack commands}
 ```
 
-## Estado
+## Status
 - **Branch**: {branch}
-- **Último commit**: {commit}
+- **Last commit**: {commit}
 
-## ⚠️ Proyecto sin DOTAGENT
+## ⚠️ Project without DOTAGENT
 
-Este proyecto no sigue la especificación DOTAGENT.
-Recomendaciones:
-1. Revisar README.md para entender el proyecto
-2. Buscar documentación en /docs si existe
-3. Preguntar al usuario sobre patrones y restricciones
-4. Considerar ejecutar `/dotagent-bootstrap` para estructurar
+This project does not follow the DOTAGENT specification.
+Recommendations:
+1. Review README.md to understand the project
+2. Look for documentation in /docs if it exists
+3. Ask the user about patterns and restrictions
+4. Consider running `/dotagent-bootstrap` to structure
 
 ---
-⚠️ Onboarding parcial. Proceder con cautela.
+⚠️ Partial onboarding. Proceed with caution.
 ```
 
 ---
 
-## Integración con Sesión
+## Session Integration
 
-Después del briefing, el agente debe:
+After the briefing, the agent should:
 
-1. **Recordar** el stack y comandos durante la sesión
-2. **Respetar** las restricciones identificadas
-3. **Consultar** ADRs antes de decisiones arquitectónicas
-4. **Verificar** invariantes antes de commits
+1. **Remember** the stack and commands during the session
+2. **Respect** the identified restrictions
+3. **Consult** ADRs before architectural decisions
+4. **Verify** invariants before commits
 
-## Comando de Actualización
+## Refresh Command
 
-Si el proyecto cambia durante la sesión:
+If the project changes during the session:
 
 ```
 /onboard --refresh
 ```
 
-Regenera solo las secciones dinámicas:
-- Estado de git
+Regenerates only dynamic sections:
+- Git status
 - Tests passing/failing
-- Cambios pendientes
+- Pending changes
 
 ---
 
-## Ejemplo de Output
+## Output Example
 
 ```markdown
-# 🗺️ Briefing del Proyecto
+# Project Briefing
 
-## Identidad
-- **Nombre**: task-manager
-- **Descripción**: API REST para gestión de tareas con soporte multiusuario
+## Identity
+- **Name**: task-manager
+- **Description**: REST API for task management with multi-user support
 - **Stack**: Python 3.12 + FastAPI + PostgreSQL + SQLAlchemy
 
-## Estructura
+## Structure
 ```
 src/
-├── users/          # Autenticación y gestión de usuarios
-├── tasks/          # CRUD de tareas y asignaciones
-├── notifications/  # Sistema de notificaciones
-└── shared/         # Utilidades compartidas
+├── users/          # Authentication and user management
+├── tasks/          # Task CRUD and assignments
+├── notifications/  # Notification system
+└── shared/         # Shared utilities
 tests/
 ├── integration/
 └── fixtures/
@@ -329,61 +329,61 @@ docs/
 └── invariants/
 ```
 
-## Comandos Disponibles
+## Available Commands
 ```bash
 pytest                    # Tests
-pytest src/tasks/         # Tests de módulo
+pytest src/tasks/         # Module tests
 ruff check .              # Lint
 ruff format .             # Format
-alembic upgrade head      # Migraciones
+alembic upgrade head      # Migrations
 ```
 
-## Módulos Principales
-| Módulo | Archivos | Tests | AGENTS.md |
-|--------|----------|-------|-----------|
+## Main Modules
+| Module | Files | Tests | AGENTS.md |
+|--------|-------|-------|-----------|
 | users | 6 | 5 | ✅ |
 | tasks | 9 | 8 | ✅ |
 | notifications | 4 | 2 | ❌ |
 | shared | 3 | 3 | ❌ |
 
-## Estado Actual
+## Current Status
 - **Branch**: feature/recurring-tasks
-- **Último commit**: feat(tasks): add recurrence field to task model
-- **Cambios pendientes**: 2 archivos modificados
+- **Last commit**: feat(tasks): add recurrence field to task model
+- **Pending changes**: 2 modified files
 - **Tests**: 43 passing, 2 failing
 
-## Decisiones Arquitectónicas
-| ID | Tema |
-|----|------|
+## Architectural Decisions
+| ID | Topic |
+|----|-------|
 | ADR-0001 | Stack: Python + FastAPI |
-| ADR-0002 | PostgreSQL para persistencia |
-| ADR-0003 | JWT para autenticación |
-| ADR-0004 | Soft delete para todas las entidades |
+| ADR-0002 | PostgreSQL for persistence |
+| ADR-0003 | JWT for authentication |
+| ADR-0004 | Soft delete for all entities |
 
-## Invariantes Críticas
-- 🔴 INV-001: Validar toda entrada con Pydantic
-- 🔴 INV-002: Autenticación obligatoria excepto /health y /auth
-- 🔴 INV-003: Soft delete (nunca DELETE físico)
-- 🔴 INV-004: Transacciones para operaciones multi-tabla
+## Critical Invariants
+- 🔴 INV-001: Validate all input with Pydantic
+- 🔴 INV-002: Mandatory authentication except /health and /auth
+- 🔴 INV-003: Soft delete (never physical DELETE)
+- 🔴 INV-004: Transactions for multi-table operations
 
-## Restricciones
-- NUNCA: Modificar alembic/versions/ sin migración nueva
-- NUNCA: Hardcodear credenciales
-- Confirmar antes: pyproject.toml, .github/workflows/
+## Restrictions
+- NEVER: Modify alembic/versions/ without a new migration
+- NEVER: Hardcode credentials
+- Confirm before: pyproject.toml, .github/workflows/
 
-## Alertas
-- 🔴 2 tests fallando en `src/tasks/recurrence.test.py`
-- 🟡 Módulo notifications con baja cobertura (50%)
+## Alerts
+- 🔴 2 tests failing in `src/tasks/recurrence.test.py`
+- 🟡 Notifications module with low coverage (50%)
 
 ---
-✅ Onboarding completo. Listo para trabajar.
+✅ Onboarding complete. Ready to work.
 ```
 
 ---
 
-## Notas de Implementación
+## Implementation Notes
 
-- El briefing debe caber en ~1000 tokens para no consumir contexto
-- Priorizar información accionable sobre exhaustividad
-- Si el proyecto es muy grande, mostrar solo top-level + módulo relevante
-- Cachear resultado en memoria durante la sesión
+- The briefing should fit in ~1000 tokens to avoid consuming context
+- Prioritize actionable information over exhaustiveness
+- If the project is very large, show only top-level + relevant module
+- Cache the result in memory during the session

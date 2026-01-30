@@ -47,7 +47,7 @@ dotagent/
 
 The complete specification is available at [`doc/DOTAGENT.md`](doc/DOTAGENT.md). It covers directory structure, agent configuration, documentation standards, testing strategy, TDD enforcement, and security boundaries.
 
-The specification is written in Spanish with English code examples.
+The complete specification is written in English.
 
 ## License
 

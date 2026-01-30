@@ -1,520 +1,520 @@
 # DOTAGENT v1.0
 
-## Especificación para Repositorios Gestionados por Agentes de IA
+## Specification for AI Agent-Managed Repositories
 
 ---
 
-## Prólogo: El Cambio de Paradigma
+## Prologue: The Paradigm Shift
 
-Durante décadas, las prácticas de desarrollo de software han optimizado para un lector específico: el cerebro humano. Clean code, SOLID, DRY, patrones de diseño... todo asume un desarrollador con memoria a largo plazo, intuición, contexto implícito y la capacidad de "leer entre líneas".
+For decades, software development practices have optimized for a specific reader: the human brain. Clean code, SOLID, DRY, design patterns... all assume a developer with long-term memory, intuition, implicit context, and the ability to "read between the lines".
 
-Los agentes de IA operan bajo restricciones radicalmente diferentes:
+AI agents operate under radically different constraints:
 
-| Humano | Agente |
-|--------|--------|
-| Memoria persistente entre sesiones | Sin memoria entre sesiones |
-| Contexto implícito acumulado | Solo conoce lo que está escrito |
-| Intuición para inferir intenciones | Requiere especificación explícita |
-| Coste cognitivo al repetir trabajo | Puede regenerar código trivial sin coste |
-| Limitado por tiempo y fatiga | Limitado por tokens y contexto |
+| Human | Agent |
+|-------|-------|
+| Persistent memory across sessions | No memory between sessions |
+| Accumulated implicit context | Only knows what is written |
+| Intuition to infer intentions | Requires explicit specification |
+| Cognitive cost when repeating work | Can regenerate trivial code at no cost |
+| Limited by time and fatigue | Limited by tokens and context |
 
-Esta especificación define cómo estructurar repositorios que maximicen la efectividad de agentes como Claude Code, Cursor, Copilot, Aider y otros, sin sacrificar la mantenibilidad humana.
+This specification defines how to structure repositories that maximize the effectiveness of agents like Claude Code, Cursor, Copilot, Aider, and others, without sacrificing human maintainability.
 
 ---
 
-## 1. Estructura de Directorios
+## 1. Directory Structure
 
-### 1.1 Raíz del Proyecto
+### 1.1 Project Root
 
 ```
-proyecto/
-├── .agent/                    # Configuración para agentes (ver sección 2)
+project/
+├── .agent/                    # Agent configuration (see section 2)
 ├── docs/
-│   ├── architecture/          # ADRs y documentación arquitectónica
-│   ├── invariants/            # Invariantes del sistema
-│   └── runbooks/              # Procedimientos operativos
-├── src/                       # Código fuente
-├── tests/                     # Tests de integración y e2e
-├── scripts/                   # Scripts de automatización
-├── AGENTS.md                  # Instrucciones principales para agentes
-├── README.md                  # Documentación para humanos
-└── CHANGELOG.md               # Historial de cambios
+│   ├── architecture/          # ADRs and architectural documentation
+│   ├── invariants/            # System invariants
+│   └── runbooks/              # Operational procedures
+├── src/                       # Source code
+├── tests/                     # Integration and e2e tests
+├── scripts/                   # Automation scripts
+├── AGENTS.md                  # Main instructions for agents
+├── README.md                  # Documentation for humans
+└── CHANGELOG.md               # Change history
 ```
 
-### 1.2 Principio de Localidad
+### 1.2 Locality Principle
 
-Los agentes operan mejor cuando el contexto relevante está cerca del código que modifican. Cada directorio significativo puede contener:
+Agents work best when relevant context is close to the code they modify. Each significant directory may contain:
 
 ```
 src/payments/
-├── AGENTS.md                  # Reglas específicas de este módulo
-├── INVARIANTS.md              # Invariantes que nunca deben violarse
+├── AGENTS.md                  # Module-specific rules
+├── INVARIANTS.md              # Invariants that must never be violated
 ├── handlers/
 ├── models/
-└── *.test.*                   # Tests unitarios junto al código
+└── *.test.*                   # Unit tests alongside code
 ```
 
-El agente lee el `AGENTS.md` más cercano al archivo que está modificando, permitiendo reglas jerárquicas que se sobrescriben de general a específico.
+The agent reads the nearest `AGENTS.md` to the file being modified, enabling hierarchical rules that override from general to specific.
 
 ---
 
-## 2. El Directorio `.agent/`
+## 2. The `.agent/` Directory
 
-Configuración dedicada para agentes de IA:
+Dedicated configuration for AI agents:
 
 ```
 .agent/
-├── config.yaml                # Configuración global del proyecto
-├── commands/                  # Slash commands personalizados
+├── config.yaml                # Global project configuration
+├── commands/                  # Custom slash commands
 │   ├── deploy.md
 │   ├── test-module.md
 │   └── review.md
-├── skills/                    # Conocimiento especializado
+├── skills/                    # Specialized knowledge
 │   ├── database/SKILL.md
 │   ├── authentication/SKILL.md
 │   └── api-design/SKILL.md
-├── personas/                  # Agentes especializados
+├── personas/                  # Specialized agents
 │   ├── code-reviewer.md
 │   ├── security-auditor.md
 │   └── tdd-enforcer.md
-└── hooks/                     # Automatizaciones
+└── hooks/                     # Automations
     ├── pre-commit.md
     └── post-change.md
 ```
 
-### 2.1 Archivo de Configuración Principal
+### 2.1 Main Configuration File
 
-El archivo `.agent/config.yaml` define la configuración del proyecto de forma estructurada:
+The `.agent/config.yaml` file defines the project configuration in a structured way:
 
 ```yaml
 version: "1.0"
 
 project:
-  name: "<nombre del proyecto>"
+  name: "<project name>"
   type: "<web-application|api|library|cli|mobile|other>"
-  primary_language: "<lenguaje principal>"
-  
+  primary_language: "<primary language>"
+
 stack:
-  # Definir las tecnologías del proyecto
-  runtime: "<runtime y versión>"
-  framework: "<framework y versión>"
-  database: "<base de datos si aplica>"
-  orm: "<ORM/query builder si aplica>"
-  testing: "<framework de testing>"
+  # Define project technologies
+  runtime: "<runtime and version>"
+  framework: "<framework and version>"
+  database: "<database if applicable>"
+  orm: "<ORM/query builder if applicable>"
+  testing: "<testing framework>"
 
 commands:
-  # Comandos que el agente puede ejecutar
-  build: "<comando de build>"
-  test: "<comando para ejecutar tests>"
-  test_single: "<comando para test individual con placeholder {file}>"
-  lint: "<comando de linting>"
-  format: "<comando de formateo>"
-  type_check: "<comando de verificación de tipos si aplica>"
+  # Commands the agent can execute
+  build: "<build command>"
+  test: "<command to run tests>"
+  test_single: "<command for individual test with placeholder {file}>"
+  lint: "<linting command>"
+  format: "<formatting command>"
+  type_check: "<type checking command if applicable>"
 
 paths:
-  # Ubicaciones importantes del proyecto
-  source: "<directorio de código fuente>"
-  tests: "<directorio de tests de integración/e2e>"
-  # Agregar paths específicos del proyecto
-  
+  # Important project locations
+  source: "<source code directory>"
+  tests: "<integration/e2e test directory>"
+  # Add project-specific paths
+
 conventions:
   naming:
     files: "<kebab-case|snake_case|camelCase>"
     components: "<PascalCase|camelCase>"
     functions: "<camelCase|snake_case>"
     constants: "<SCREAMING_SNAKE_CASE|camelCase>"
-  
+
   imports:
-    order: ["<categorías en orden de prioridad>"]
-    alias: "<alias de imports si existe>"
-    
+    order: ["<categories in priority order>"]
+    alias: "<import alias if any>"
+
 boundaries:
   never_modify:
-    # Archivos que NUNCA deben modificarse sin intervención humana
+    # Files that must NEVER be modified without human intervention
     - ".env*"
     - "*.lock"
-    - "<archivos de migración>"
-  
+    - "<migration files>"
+
   ask_before_modifying:
-    # Archivos que requieren confirmación
-    - "<archivos de configuración críticos>"
-    - "<workflows de CI/CD>"
-    
+    # Files that require confirmation
+    - "<critical configuration files>"
+    - "<CI/CD workflows>"
+
   safe_to_modify:
-    # Patrones de archivos seguros para modificar
-    - "src/**/*.<extensión>"
+    # File patterns safe to modify
+    - "src/**/*.<extension>"
     - "tests/**/*.test.*"
 ```
 
 ---
 
-## 3. AGENTS.md: La Constitución del Proyecto
+## 3. AGENTS.md: The Project Constitution
 
-El archivo `AGENTS.md` es el documento más crítico. Es lo que el agente lee al inicio de cada sesión.
+The `AGENTS.md` file is the most critical document. It is what the agent reads at the start of every session.
 
-### 3.1 Principios de Redacción
+### 3.1 Writing Principles
 
-1. **Concisión extrema**: Cada instrucción consume tokens. Elimina redundancias.
-2. **Instrucciones positivas**: "Usa X" es mejor que "No uses Y" (los agentes ignoran negaciones con mayor frecuencia).
-3. **Ejemplos sobre explicaciones**: Mostrar código correcto > describir qué hacer.
-4. **Priorización visual**: Lo más importante primero.
+1. **Extreme conciseness**: Every instruction consumes tokens. Eliminate redundancies.
+2. **Positive instructions**: "Use X" is better than "Don't use Y" (agents ignore negations more frequently).
+3. **Examples over explanations**: Showing correct code > describing what to do.
+4. **Visual prioritization**: Most important things first.
 
-### 3.2 Estructura Recomendada
+### 3.2 Recommended Structure
 
 ```markdown
 # AGENTS.md
 
-> 🚀 **INICIO DE SESIÓN**
+> **SESSION START**
 >
-> Antes de cualquier tarea, ejecutar:
+> Before any task, run:
 > ```bash
 > git status --short && git log --oneline -1
 > ```
-> - Si hay cambios pendientes → informar al usuario
-> - Si hay tests fallando → informar antes de empezar
-> - Si la tarea es compleja o el proyecto es desconocido → ejecutar onboarding completo
+> - If there are pending changes → inform the user
+> - If there are failing tests → inform before starting
+> - If the task is complex or the project is unknown → run full onboarding
 
-## Identidad del Proyecto
-<Descripción breve: qué es, stack principal>
+## Project Identity
+<Brief description: what it is, main stack>
 
-## Comandos Críticos
+## Critical Commands
 ```bash
-<comando test>           # Ejecutar todos los tests
-<comando test único>     # Test específico
-<comando verificación>   # Verificar tipos/lint
-<otros comandos clave>
+<test command>              # Run all tests
+<single test command>       # Specific test
+<check command>             # Check types/lint
+<other key commands>
 ```
 
-## Arquitectura
+## Architecture
 ```
 src/
-├── <carpeta>/     # <propósito>
-├── <carpeta>/     # <propósito>
-└── <carpeta>/     # <propósito>
+├── <folder>/     # <purpose>
+├── <folder>/     # <purpose>
+└── <folder>/     # <purpose>
 ```
 
-## Patrones Obligatorios
+## Mandatory Patterns
 
-### <Área 1: ej. Acceso a Datos>
-```<lenguaje>
-// ✅ Correcto: <descripción>
-<código correcto>
+### <Area 1: e.g. Data Access>
+```<language>
+// ✅ Correct: <description>
+<correct code>
 
-// ❌ Incorrecto: <descripción>
-<código incorrecto>
+// ❌ Incorrect: <description>
+<incorrect code>
 ```
 
-### <Área 2: ej. Manejo de Errores>
-```<lenguaje>
-// ✅ Correcto
-<código correcto>
+### <Area 2: e.g. Error Handling>
+```<language>
+// ✅ Correct
+<correct code>
 
-// ❌ Incorrecto
-<código incorrecto>
+// ❌ Incorrect
+<incorrect code>
 ```
 
-## Restricciones Absolutas
-- NUNCA <acción prohibida 1>
-- NUNCA <acción prohibida 2>
-- NUNCA <acción prohibida 3>
+## Absolute Restrictions
+- NEVER <forbidden action 1>
+- NEVER <forbidden action 2>
+- NEVER <forbidden action 3>
 
-## Cuando Algo Falla
-1. <Paso de diagnóstico 1>
-2. <Paso de diagnóstico 2>
-3. Revisar `docs/architecture/` para entender decisiones previas
+## When Something Fails
+1. <Diagnostic step 1>
+2. <Diagnostic step 2>
+3. Review `docs/architecture/` to understand previous decisions
 ```
 
-### 3.3 Anti-patrones a Evitar
+### 3.3 Anti-patterns to Avoid
 
-| Anti-patrón | Por qué es malo | Alternativa |
-|-------------|-----------------|-------------|
-| Guías de estilo extensas | Usa tokens, el linter lo hace mejor | Configura herramientas de linting |
-| "Nunca hagas X" sin alternativa | El agente queda bloqueado | "Prefiere Y sobre X" |
-| Documentar lo obvio | Desperdicia contexto | Solo documenta excepciones |
-| AGENTS.md > 2000 tokens | Degrada calidad de respuestas | Divide en archivos por módulo |
+| Anti-pattern | Why it's bad | Alternative |
+|--------------|--------------|-------------|
+| Extensive style guides | Uses tokens, the linter does it better | Configure linting tools |
+| "Never do X" without alternative | The agent gets stuck | "Prefer Y over X" |
+| Documenting the obvious | Wastes context | Only document exceptions |
+| AGENTS.md > 2000 tokens | Degrades response quality | Split into per-module files |
 
 ---
 
 ## 4. Architecture Decision Records (ADRs)
 
-Los ADRs son críticos para agentes porque capturan el **porqué** detrás de las decisiones, información que no existe en el código.
+ADRs are critical for agents because they capture the **why** behind decisions — information that doesn't exist in code.
 
-### 4.1 Ubicación y Formato
+### 4.1 Location and Format
 
 ```
 docs/architecture/
-├── INDEX.md                          # Índice de decisiones
-├── 0001-<decisión-1>.md
-├── 0002-<decisión-2>.md
-├── 0003-<decisión-3>.md
+├── INDEX.md                          # Decision index
+├── 0001-<decision-1>.md
+├── 0002-<decision-2>.md
+├── 0003-<decision-3>.md
 └── template.md
 ```
 
-### 4.2 Plantilla Optimizada para Agentes
+### 4.2 Agent-Optimized Template
 
 ```markdown
-# ADR-<número>: <Título de la decisión>
+# ADR-<number>: <Decision title>
 
-## Estado
-<Propuesto|Aceptado|Deprecado|Sustituido> | <fecha>
+## Status
+<Proposed|Accepted|Deprecated|Superseded> | <date>
 
-## Contexto
-<Descripción del problema o necesidad que motiva la decisión>
+## Context
+<Description of the problem or need motivating the decision>
 
-## Decisión
-<La decisión tomada, en términos claros>
+## Decision
+<The decision made, in clear terms>
 
-## Consecuencias
+## Consequences
 
-### Positivas
-- <Beneficio 1>
-- <Beneficio 2>
+### Positive
+- <Benefit 1>
+- <Benefit 2>
 
-### Negativas
-- <Coste o limitación 1>
-- <Coste o limitación 2>
+### Negative
+- <Cost or limitation 1>
+- <Cost or limitation 2>
 
-### Restricciones para el Código
-- <Regla que debe seguirse en el código>
-- <Patrón obligatorio>
-- <Patrón prohibido>
+### Code Restrictions
+- <Rule that must be followed in code>
+- <Mandatory pattern>
+- <Forbidden pattern>
 
-## Alternativas Consideradas
-- **<Alternativa 1>**: <Por qué se descartó>
-- **<Alternativa 2>**: <Por qué se descartó>
+## Alternatives Considered
+- **<Alternative 1>**: <Why it was discarded>
+- **<Alternative 2>**: <Why it was discarded>
 ```
 
-### 4.3 Índice de ADRs para Agentes
+### 4.3 ADR Index for Agents
 
-Mantener un índice que el agente pueda consultar rápidamente:
+Maintain an index the agent can quickly consult:
 
 ```markdown
 # docs/architecture/INDEX.md
 
-## Decisiones Activas
+## Active Decisions
 
-| ID | Tema | Impacto | Archivo |
-|----|------|---------|---------|
-| 0001 | <Tema> | Alto | [0001-tema.md](./0001-tema.md) |
-| 0002 | <Tema> | Alto | [0002-tema.md](./0002-tema.md) |
+| ID | Topic | Impact | File |
+|----|-------|--------|------|
+| 0001 | <Topic> | High | [0001-topic.md](./0001-topic.md) |
+| 0002 | <Topic> | High | [0002-topic.md](./0002-topic.md) |
 
-## Búsqueda por Área
+## Search by Area
 - **Frontend**: 0001, 0005, 0008
-- **Base de datos**: 0002, 0006
-- **Infraestructura**: 0004, 0007
+- **Database**: 0002, 0006
+- **Infrastructure**: 0004, 0007
 ```
 
 ---
 
-## 5. Invariantes del Sistema
+## 5. System Invariants
 
-Las invariantes son reglas que **nunca deben violarse**. Son especialmente importantes para agentes porque definen límites duros.
+Invariants are rules that **must never be violated**. They are especially important for agents because they define hard boundaries.
 
-### 5.1 Archivo de Invariantes Global
+### 5.1 Global Invariants File
 
 `docs/invariants/INVARIANTS.md`:
 
 ```markdown
-# Invariantes del Sistema
+# System Invariants
 
-## Seguridad [CRÍTICO]
+## Security [CRITICAL]
 
-### INV-001: <Nombre de la invariante>
-<Descripción de la regla>
-```<lenguaje>
-// ✅ Correcto
-<código que cumple la invariante>
+### INV-001: <Invariant name>
+<Rule description>
+```<language>
+// ✅ Correct
+<code that satisfies the invariant>
 
-// ❌ Viola invariante
-<código que viola la invariante>
+// ❌ Violates invariant
+<code that violates the invariant>
 ```
 
-### INV-002: <Nombre de la invariante>
-<Descripción de la regla>
+### INV-002: <Invariant name>
+<Rule description>
 
-## Consistencia de Datos [CRÍTICO]
+## Data Consistency [CRITICAL]
 
-### INV-003: <Nombre de la invariante>
-<Descripción de la regla>
+### INV-003: <Invariant name>
+<Rule description>
 
-## Testing [OBLIGATORIO]
+## Testing [MANDATORY]
 
-### INV-004: <Nombre de la invariante>
-<Descripción de la regla>
+### INV-004: <Invariant name>
+<Rule description>
 ```
 
-### 5.2 Invariantes por Módulo
+### 5.2 Per-Module Invariants
 
-Cada módulo crítico puede tener sus propias invariantes:
+Each critical module can have its own invariants:
 
 ```markdown
-# src/<módulo>/INVARIANTS.md
+# src/<module>/INVARIANTS.md
 
-## <MÓDULO>-001: <Nombre>
-<Descripción y ejemplos de código>
+## <MODULE>-001: <Name>
+<Description and code examples>
 
-## <MÓDULO>-002: <Nombre>
-<Descripción y ejemplos de código>
+## <MODULE>-002: <Name>
+<Description and code examples>
 ```
 
 ---
 
-## 6. Metadatos de Dependencias
+## 6. Dependency Metadata
 
-Los agentes necesitan entender las relaciones entre módulos para hacer cambios coherentes.
+Agents need to understand relationships between modules to make coherent changes.
 
-### 6.1 Grafo de Dependencias
+### 6.1 Dependency Graph
 
 `docs/architecture/dependencies.yaml`:
 
 ```yaml
 modules:
-  <módulo-1>:
-    path: "src/<módulo-1>/"
-    depends_on: ["<módulo-2>"]
-    depended_by: ["<módulo-3>", "<módulo-4>"]
+  <module-1>:
+    path: "src/<module-1>/"
+    depends_on: ["<module-2>"]
+    depended_by: ["<module-3>", "<module-4>"]
     exports:
-      - "<función o clase exportada>"
-    
-  <módulo-2>:
-    path: "src/<módulo-2>/"
-    depends_on: ["<módulo-1>"]
-    depended_by: ["<módulo-5>"]
+      - "<exported function or class>"
+
+  <module-2>:
+    path: "src/<module-2>/"
+    depends_on: ["<module-1>"]
+    depended_by: ["<module-5>"]
     external_dependencies:
-      - name: "<librería externa>"
-        version: "<versión>"
-        docs: "<URL de documentación>"
+      - name: "<external library>"
+        version: "<version>"
+        docs: "<documentation URL>"
 
 change_impact:
-  # Si cambias X, revisa Y
-  "<archivo o patrón>":
-    - "<acción requerida 1>"
-    - "<acción requerida 2>"
+  # If you change X, review Y
+  "<file or pattern>":
+    - "<required action 1>"
+    - "<required action 2>"
 ```
 
-### 6.2 Mapa de Impacto
+### 6.2 Impact Map
 
-Para cambios de alto riesgo, documentar explícitamente qué puede romperse:
+For high-risk changes, explicitly document what can break:
 
 ```markdown
 # docs/architecture/impact-map.md
 
-## Cambios en <Área Crítica>
+## Changes to <Critical Area>
 
-### <Tipo de cambio 1>
-1. <Paso requerido>
-2. <Paso requerido>
-3. <Verificación>
+### <Change type 1>
+1. <Required step>
+2. <Required step>
+3. <Verification>
 
-### <Tipo de cambio 2>
-⚠️ REQUIERE <precaución especial>
-1. <Paso requerido>
-2. <Paso requerido>
+### <Change type 2>
+⚠️ REQUIRES <special precaution>
+1. <Required step>
+2. <Required step>
 ```
 
 ---
 
-## 7. Documentación Ejecutable
+## 7. Executable Documentation
 
-Código que se documenta a sí mismo y puede verificarse automáticamente.
+Code that documents itself and can be verified automatically.
 
-### 7.1 Contratos Verificables
+### 7.1 Verifiable Contracts
 
-Usar el sistema de validación del lenguaje/framework para definir contratos:
+Use the language/framework's validation system to define contracts:
 
 ```
-// Ejemplo conceptual - adaptar al stack específico
+// Conceptual example - adapt to specific stack
 
 /**
- * Contrato: <NombreOperación>
- * 
- * @invariant <Regla que debe cumplirse>
- * @invariant <Otra regla>
+ * Contract: <OperationName>
+ *
+ * @invariant <Rule that must hold>
+ * @invariant <Another rule>
  */
-<definición del schema/tipo con validaciones>
+<schema/type definition with validations>
 ```
 
-### 7.2 Ejemplos como Especificación
+### 7.2 Examples as Specification
 
 ```
-// src/<módulo>/examples.<extensión>
+// src/<module>/examples.<extension>
 
 /**
- * Ejemplos canónicos para el módulo.
- * Estos ejemplos son ejecutados como tests y sirven como documentación.
+ * Canonical examples for the module.
+ * These examples are run as tests and serve as documentation.
  */
 
 export const examples = {
-  /** <Descripción del caso> */
-  <nombreCaso>: {
-    input: { /* datos de entrada */ },
-    expectedOutput: { /* resultado esperado */ }
+  /** <Case description> */
+  <caseName>: {
+    input: { /* input data */ },
+    expectedOutput: { /* expected result */ }
   },
-  
-  /** <Descripción de otro caso> */
-  <otroCaso>: {
-    input: { /* datos de entrada */ },
-    expectedOutput: { /* resultado esperado */ }
+
+  /** <Another case description> */
+  <anotherCase>: {
+    input: { /* input data */ },
+    expectedOutput: { /* expected result */ }
   }
 }
 ```
 
 ---
 
-## 8. Testing para Agentes
+## 8. Testing for Agents
 
-Los tests son el mecanismo de verificación principal. Sin tests, el agente opera a ciegas.
+Tests are the primary verification mechanism. Without tests, the agent operates blind.
 
-### 8.1 Estructura de Tests: Colocación Híbrida
+### 8.1 Test Structure: Hybrid Colocation
 
-Los tests unitarios van **junto al código que prueban**. Los tests de integración y e2e van en directorio separado.
+Unit tests go **alongside the code they test**. Integration and e2e tests go in a separate directory.
 
-#### Por qué tests unitarios junto al código
+#### Why unit tests alongside code
 
-| Beneficio | Impacto para el agente |
-|-----------|------------------------|
-| Localidad | Ve test + código en un solo listado de directorio |
-| Descubrimiento | Imposible ignorar que existe el test |
-| Refactoring | Mover archivo = mover test automáticamente |
-| Contexto | Test y código comparten tokens de contexto cercanos |
+| Benefit | Impact for the agent |
+|---------|---------------------|
+| Locality | Sees test + code in a single directory listing |
+| Discovery | Impossible to miss that the test exists |
+| Refactoring | Moving a file = moving the test automatically |
+| Context | Test and code share nearby context tokens |
 
-#### Estructura recomendada
+#### Recommended structure
 
 ```
 src/
-├── <módulo-1>/
+├── <module-1>/
 │   ├── handler.<ext>
-│   ├── handler.test.<ext>        # ✅ Unit test junto al código
+│   ├── handler.test.<ext>        # ✅ Unit test alongside code
 │   ├── service.<ext>
-│   ├── service.test.<ext>        # ✅ Unit test junto al código
+│   ├── service.test.<ext>        # ✅ Unit test alongside code
 │   └── types.<ext>
-├── <módulo-2>/
+├── <module-2>/
 │   ├── client.<ext>
-│   ├── client.test.<ext>         # ✅ Unit test junto al código
+│   ├── client.test.<ext>         # ✅ Unit test alongside code
 │   └── utils.<ext>
 
 tests/
-├── integration/                   # Tests que cruzan módulos
-│   ├── <flujo-1>.test.<ext>
-│   └── <flujo-2>.test.<ext>
-├── e2e/                           # Tests de sistema completo
-│   ├── <escenario-1>.test.<ext>
-│   └── <escenario-2>.test.<ext>
-├── fixtures/                      # Datos de prueba compartidos
-│   └── <entidad>.fixtures.<ext>
-└── helpers/                       # Utilidades de testing
+├── integration/                   # Tests that cross modules
+│   ├── <flow-1>.test.<ext>
+│   └── <flow-2>.test.<ext>
+├── e2e/                           # Full system tests
+│   ├── <scenario-1>.test.<ext>
+│   └── <scenario-2>.test.<ext>
+├── fixtures/                      # Shared test data
+│   └── <entity>.fixtures.<ext>
+└── helpers/                       # Testing utilities
     └── <helper>.<ext>
 ```
 
-#### Configuración
+#### Configuration
 
-Excluir tests del build de producción y configurar el test runner para encontrar tests en ambas ubicaciones:
+Exclude tests from the production build and configure the test runner to find tests in both locations:
 
 ```yaml
-# Pseudo-configuración - adaptar al stack
+# Pseudo-configuration - adapt to stack
 test:
   include:
-    - "src/**/*.test.*"        # Unit tests junto al código
+    - "src/**/*.test.*"        # Unit tests alongside code
     - "tests/**/*.test.*"      # Integration/e2e tests
   exclude:
     - "node_modules"
@@ -526,65 +526,65 @@ build:
     - "**/*.test.*"
 ```
 
-### 8.2 Convenciones para Tests Amigables con Agentes
+### 8.2 Conventions for Agent-Friendly Tests
 
 ```
-// src/<módulo>/<archivo>.test.<ext>
+// src/<module>/<file>.test.<ext>
 
 /**
- * Tests para <función/módulo>
- * 
- * @module <módulo>
- * @function <función>
- * @dependencies <dependencias>
+ * Tests for <function/module>
+ *
+ * @module <module>
+ * @function <function>
+ * @dependencies <dependencies>
  */
-describe("<función/módulo>", () => {
+describe("<function/module>", () => {
   // ============================================
-  // SETUP - Contexto compartido
+  // SETUP - Shared context
   // ============================================
-  // Preparación de datos y mocks
+  // Data and mock preparation
 
   // ============================================
-  // CASOS EXITOSOS
+  // SUCCESS CASES
   // ============================================
-  describe("cuando los datos son válidos", () => {
-    it("<descripción del comportamiento esperado>", () => {
-      // Arrange - datos de entrada
-      // Act - ejecutar función
-      // Assert - verificar resultado
+  describe("when data is valid", () => {
+    it("<expected behavior description>", () => {
+      // Arrange - input data
+      // Act - execute function
+      // Assert - verify result
     })
   })
 
   // ============================================
-  // CASOS DE ERROR
+  // ERROR CASES
   // ============================================
-  describe("cuando los datos son inválidos", () => {
-    it("<descripción del error esperado>", () => {
+  describe("when data is invalid", () => {
+    it("<expected error description>", () => {
       // Arrange, Act, Assert
     })
   })
 
   // ============================================
-  // CASOS LÍMITE
+  // EDGE CASES
   // ============================================
-  describe("casos límite", () => {
-    it("<descripción del caso límite>", () => {
+  describe("edge cases", () => {
+    it("<edge case description>", () => {
       // Arrange, Act, Assert
     })
   })
 })
 ```
 
-### 8.3 Indicadores para el Agente
+### 8.3 Agent Indicators
 
-Agregar metadatos que ayuden al agente a entender qué tests ejecutar:
+Add metadata to help the agent understand which tests to run:
 
 ```
 /**
- * @tags critical, <área>
- * @runWith <comando para ejecutar estos tests>
- * @relatedFiles <archivos relacionados>
- * @runBefore <comandos de setup si son necesarios>
+ * @tags critical, <area>
+ * @runWith <command to run these tests>
+ * @relatedFiles <related files>
+ * @runBefore <setup commands if needed>
  */
 ```
 
@@ -592,124 +592,124 @@ Agregar metadatos que ayuden al agente a entender qué tests ejecutar:
 
 ## 9. Test-Driven Development (TDD)
 
-Los agentes operan mejor con contratos verificables definidos *antes* de implementar. TDD no es solo una buena práctica: es el mecanismo que ancla el razonamiento del agente y previene alucinaciones funcionales.
+Agents work best with verifiable contracts defined *before* implementation. TDD is not just a good practice: it is the mechanism that anchors agent reasoning and prevents functional hallucinations.
 
-### 9.1 Por Qué TDD es Crítico para Agentes
+### 9.1 Why TDD is Critical for Agents
 
-| Sin TDD | Con TDD |
-|---------|---------|
-| El agente implementa y "espera que funcione" | El agente sabe exactamente qué debe pasar |
-| Errores se descubren tarde o nunca | Feedback inmediato en cada ciclo |
-| Tests escritos después justifican el código | Tests escritos antes especifican el comportamiento |
-| El agente puede alucinar comportamientos | El test ancla la realidad esperada |
+| Without TDD | With TDD |
+|-------------|----------|
+| The agent implements and "hopes it works" | The agent knows exactly what should happen |
+| Errors are discovered late or never | Immediate feedback on every cycle |
+| Tests written after justify the code | Tests written before specify the behavior |
+| The agent can hallucinate behaviors | The test anchors the expected reality |
 
-### 9.2 Niveles de Obligatoriedad
+### 9.2 Levels of Obligation
 
-No todo código requiere TDD estricto. Definir niveles según el riesgo:
+Not all code requires strict TDD. Define levels based on risk:
 
 ```yaml
 # .agent/config.yaml
 
 testing:
   tdd:
-    # Nivel 1: OBLIGATORIO - tests antes de implementar
+    # Level 1: MANDATORY - tests before implementation
     required_for:
-      - "src/<lógica-negocio>/**"
-      - "src/<utilidades-compartidas>/**"
-      - "src/<dominio>/**"
-    
-    # Nivel 2: RECOMENDADO - tests antes salvo justificación
+      - "src/<business-logic>/**"
+      - "src/<shared-utilities>/**"
+      - "src/<domain>/**"
+
+    # Level 2: RECOMMENDED - tests before unless justified
     recommended_for:
-      - "src/<componentes>/**"
-      - "src/<hooks-o-helpers>/**"
-    
-    # Nivel 3: OPCIONAL - tests después o ninguno
+      - "src/<components>/**"
+      - "src/<hooks-or-helpers>/**"
+
+    # Level 3: OPTIONAL - tests after or none
     optional_for:
-      - "src/<páginas-o-vistas>/**"
+      - "src/<pages-or-views>/**"
       - "scripts/**"
       - "**/*.config.*"
 ```
 
-### 9.3 El Ciclo TDD para Agentes
+### 9.3 The TDD Cycle for Agents
 
-Documentar el ciclo explícitamente en `AGENTS.md`:
+Document the cycle explicitly in `AGENTS.md`:
 
 ```markdown
-## Testing: TDD por Defecto
+## Testing: TDD by Default
 
-Para archivos en rutas TDD-obligatorias:
+For files in TDD-mandatory paths:
 
-### Ciclo Obligatorio
+### Mandatory Cycle
 
-1. **TEST PRIMERO**: Escribe el test describiendo el comportamiento esperado
-2. **ROJO**: Ejecuta el test - DEBE fallar
-3. **IMPLEMENTA**: Escribe el mínimo código para que pase
-4. **VERDE**: Ejecuta el test - DEBE pasar
-5. **REFACTORIZA**: Mejora el código manteniendo tests verdes
-6. **REPITE**: Siguiente caso de prueba
+1. **TEST FIRST**: Write the test describing the expected behavior
+2. **RED**: Run the test - it MUST fail
+3. **IMPLEMENT**: Write the minimum code to make it pass
+4. **GREEN**: Run the test - it MUST pass
+5. **REFACTOR**: Improve the code while keeping tests green
+6. **REPEAT**: Next test case
 
-### Excepciones Permitidas
+### Allowed Exceptions
 
-Puedes omitir TDD estricto si:
-- Es un **spike exploratorio** → Marcar con `// SPIKE: eliminar o testear antes de merge`
-- Es **configuración pura** sin lógica condicional
-- El usuario **explícitamente lo solicita** con justificación
-- Es **código generado** automáticamente
+You may skip strict TDD if:
+- It's an **exploratory spike** → Mark with `// SPIKE: remove or test before merge`
+- It's **pure configuration** with no conditional logic
+- The user **explicitly requests it** with justification
+- It's **automatically generated** code
 ```
 
-### 9.4 Enforcement Automático
+### 9.4 Automatic Enforcement
 
-#### Persona TDD Enforcer
+#### TDD Enforcer Persona
 
 `.agent/personas/tdd-enforcer.md`:
 
 ```markdown
 ---
 name: tdd-enforcer
-description: Verifica cumplimiento de TDD antes de implementar
+description: Verifies TDD compliance before implementation
 trigger: before_file_create, before_file_modify
-applies_to: <rutas TDD-obligatorias>
+applies_to: <TDD-mandatory paths>
 ---
 
 # TDD Enforcer
 
-Antes de crear o modificar archivos en rutas TDD-obligatorias:
+Before creating or modifying files in TDD-mandatory paths:
 
-## Verificaciones
+## Checks
 
-1. **¿Existe test correspondiente?**
-   - Si NO existe → Crear test primero
+1. **Does a corresponding test exist?**
+   - If NOT → Create test first
 
-2. **¿El test cubre el cambio planeado?**
-   - Si es función nueva → Test debe existir y fallar
-   - Si es modificación → Test debe cubrir el caso modificado
+2. **Does the test cover the planned change?**
+   - If it's a new function → Test must exist and fail
+   - If it's a modification → Test must cover the modified case
 
-3. **¿El test está en rojo?**
-   - Si PASA → El test no especifica el nuevo comportamiento
-   - Si FALLA → Proceder con implementación
+3. **Is the test red?**
+   - If it PASSES → The test doesn't specify the new behavior
+   - If it FAILS → Proceed with implementation
 
-## Flujo de Decisión
+## Decision Flow
 
 ```
-¿Archivo en ruta TDD-obligatoria?
+Is the file in a TDD-mandatory path?
     │
-    ├─ NO → Proceder normalmente
+    ├─ NO → Proceed normally
     │
-    └─ SÍ → ¿Existe test correspondiente?
+    └─ YES → Does a corresponding test exist?
               │
-              ├─ NO → CREAR TEST PRIMERO
-              │        └─ Ejecutar test (debe fallar)
-              │             └─ Implementar
+              ├─ NO → CREATE TEST FIRST
+              │        └─ Run test (must fail)
+              │             └─ Implement
               │
-              └─ SÍ → ¿Test cubre el cambio?
+              └─ YES → Does the test cover the change?
                         │
-                        ├─ NO → ACTUALIZAR TEST PRIMERO
+                        ├─ NO → UPDATE TEST FIRST
                         │
-                        └─ SÍ → Implementar y verificar
+                        └─ YES → Implement and verify
 ```
 ```
 
-### 9.5 Métricas TDD
+### 9.5 TDD Metrics
 
 ```yaml
 # .agent/config.yaml
@@ -719,75 +719,75 @@ testing:
     metrics:
       track: true
       report_path: ".agent/logs/tdd-metrics.md"
-      
+
     thresholds:
-      # Porcentaje mínimo de archivos TDD-obligatorios con tests
+      # Minimum percentage of TDD-mandatory files with tests
       coverage_required: 95
-      # Tests deben existir antes del código (medido por timestamps en git)
+      # Tests must exist before code (measured by git timestamps)
       test_first_ratio: 80
 ```
 
 ---
 
-## 10. Comandos y Scripts
+## 10. Commands and Scripts
 
-### 10.1 Scripts Documentados
+### 10.1 Documented Scripts
 
-Definir comandos estándar que el agente pueda usar:
+Define standard commands the agent can use:
 
 ```yaml
-# Ejemplo de estructura en package.json, Makefile, o equivalente
+# Example structure in package.json, Makefile, or equivalent
 
 commands:
-  dev: "<iniciar desarrollo>"
-  build: "<compilar para producción>"
-  test: "<ejecutar todos los tests>"
-  test:unit: "<ejecutar tests unitarios>"
-  test:integration: "<ejecutar tests de integración>"
-  test:e2e: "<ejecutar tests end-to-end>"
-  lint: "<verificar estilo de código>"
-  lint:fix: "<corregir estilo automáticamente>"
-  format: "<formatear código>"
-  type-check: "<verificar tipos si aplica>"
-  validate: "<lint + types + test combinados>"
+  dev: "<start development>"
+  build: "<compile for production>"
+  test: "<run all tests>"
+  test:unit: "<run unit tests>"
+  test:integration: "<run integration tests>"
+  test:e2e: "<run end-to-end tests>"
+  lint: "<check code style>"
+  lint:fix: "<auto-fix style>"
+  format: "<format code>"
+  type-check: "<check types if applicable>"
+  validate: "<lint + types + test combined>"
 ```
 
-### 10.2 Slash Commands Personalizados
+### 10.2 Custom Slash Commands
 
 `.agent/commands/test-module.md`:
 
 ```markdown
 ---
 name: test-module
-description: Ejecuta tests de un módulo específico
+description: Run tests for a specific module
 ---
 
-# Instrucciones
+# Instructions
 
-Cuando el usuario pida testear un módulo:
+When the user asks to test a module:
 
-1. Identificar el módulo
-2. Ejecutar tests unitarios: `<comando> src/{módulo}/**/*.test.*`
-3. Si hay fallos, analizar y corregir
-4. Ejecutar tests de integración relacionados
-5. Reportar resultados
+1. Identify the module
+2. Run unit tests: `<command> src/{module}/**/*.test.*`
+3. If there are failures, analyze and fix
+4. Run related integration tests
+5. Report results
 ```
 
 ---
 
-## 11. Control de Versiones para Agentes
+## 11. Version Control for Agents
 
-### 11.1 Convención de Commits
+### 11.1 Commit Convention
 
 `.agent/commands/commit.md`:
 
 ```markdown
 ---
 name: commit
-description: Crear commit siguiendo convenciones
+description: Create commit following conventions
 ---
 
-# Formato de Commit
+# Commit Format
 
 ```
 <type>(<scope>): <description>
@@ -797,15 +797,15 @@ description: Crear commit siguiendo convenciones
 [footer]
 ```
 
-## Tipos
-- feat: Nueva funcionalidad
-- fix: Corrección de bug
-- refactor: Refactorización sin cambio funcional
-- test: Agregar o modificar tests
-- docs: Documentación
-- chore: Mantenimiento
+## Types
+- feat: New feature
+- fix: Bug fix
+- refactor: Refactoring without functional change
+- test: Add or modify tests
+- docs: Documentation
+- chore: Maintenance
 
-## Ejemplo
+## Example
 
 ```
 feat(orders): add discount validation
@@ -823,89 +823,89 @@ Closes #123
 ```markdown
 # docs/architecture/git-workflow.md
 
-## Ramas
+## Branches
 
-- `main`: Producción, siempre deployable
-- `develop`: Integración (si se usa GitFlow)
-- `feature/*`: Nuevas funcionalidades
-- `fix/*`: Correcciones
+- `main`: Production, always deployable
+- `develop`: Integration (if using GitFlow)
+- `feature/*`: New features
+- `fix/*`: Bug fixes
 
-## Flujo para Agentes
+## Workflow for Agents
 
-1. Crear rama desde base: `git checkout -b feature/<ticket>-<descripción>`
-2. Hacer cambios incrementales con commits atómicos
-3. Ejecutar validación antes de cada commit
-4. Crear PR cuando esté listo
+1. Create branch from base: `git checkout -b feature/<ticket>-<description>`
+2. Make incremental changes with atomic commits
+3. Run validation before each commit
+4. Create PR when ready
 ```
 
 ---
 
-## 12. Seguridad y Límites
+## 12. Security and Boundaries
 
-### 12.1 Archivos Protegidos
+### 12.1 Protected Files
 
 ```yaml
 # .agent/config.yaml
 
 security:
-  # Archivos que NUNCA deben modificarse sin confirmación humana
+  # Files that must NEVER be modified without human confirmation
   protected_files:
     - ".env*"
     - "*.pem"
     - "*.key"
-    - "<directorio de migraciones>/**"
-    - "<workflows de CI/CD>/**"
-    - "<archivos de lock>"
-  
-  # Patrones que nunca deben aparecer en el código
+    - "<migration directory>/**"
+    - "<CI/CD workflows>/**"
+    - "<lock files>"
+
+  # Patterns that must never appear in code
   forbidden_patterns:
-    - pattern: "<patrón peligroso 1>"
-      message: "<explicación>"
-    - pattern: "<patrón peligroso 2>"
-      message: "<explicación>"
-  
-  # Límites operativos
+    - pattern: "<dangerous pattern 1>"
+      message: "<explanation>"
+    - pattern: "<dangerous pattern 2>"
+      message: "<explanation>"
+
+  # Operational limits
   limits:
     max_file_changes_per_commit: 20
     max_lines_per_file: 500
-    require_tests_for: ["<rutas críticas>"]
+    require_tests_for: ["<critical paths>"]
 ```
 
-### 12.2 Revisión de Seguridad Automática
+### 12.2 Automatic Security Review
 
 `.agent/personas/security-auditor.md`:
 
 ```markdown
 ---
 name: security-auditor
-description: Revisa cambios por vulnerabilidades de seguridad
+description: Reviews changes for security vulnerabilities
 trigger: pre-commit
 ---
 
 # Security Auditor
 
-Antes de cada commit, verificar:
+Before each commit, verify:
 
 ## Checklist
 
-1. **Secrets**: ¿Hay credenciales hardcodeadas?
-2. **Injection**: ¿Las queries usan parámetros?
-3. **XSS**: ¿El input de usuario se sanitiza?
-4. **Auth**: ¿Las rutas protegidas verifican autenticación?
-5. **Validation**: ¿Toda entrada externa se valida?
+1. **Secrets**: Are there hardcoded credentials?
+2. **Injection**: Do queries use parameters?
+3. **XSS**: Is user input sanitized?
+4. **Auth**: Do protected routes verify authentication?
+5. **Validation**: Is all external input validated?
 
-## Severidades
+## Severities
 
-- 🔴 CRÍTICO: Bloquea el commit
-- 🟠 ALTO: Requiere justificación
-- 🟡 MEDIO: Warning, proceder con cautela
+- 🔴 CRITICAL: Blocks the commit
+- 🟠 HIGH: Requires justification
+- 🟡 MEDIUM: Warning, proceed with caution
 ```
 
 ---
 
-## 13. Monitoreo y Feedback
+## 13. Monitoring and Feedback
 
-### 13.1 Logging de Sesiones
+### 13.1 Session Logging
 
 ```yaml
 # .agent/config.yaml
@@ -913,83 +913,83 @@ Antes de cada commit, verificar:
 feedback:
   log_sessions: true
   log_path: ".agent/logs/"
-  
-  # Patrones de error comunes para documentar
+
+  # Common error patterns to document
   common_errors:
-    - pattern: "<error frecuente 1>"
-      solution: "<solución>"
-    - pattern: "<error frecuente 2>"
-      solution: "<solución>"
+    - pattern: "<frequent error 1>"
+      solution: "<solution>"
+    - pattern: "<frequent error 2>"
+      solution: "<solution>"
 ```
 
-### 13.2 Métricas de Efectividad
+### 13.2 Effectiveness Metrics
 
 ```markdown
 # .agent/logs/metrics.md
 
-## Última semana
+## Last Week
 
-| Métrica | Valor |
-|---------|-------|
-| Tareas completadas | X |
-| Commits exitosos | X |
-| Tests agregados | X |
-| Bugs introducidos | X |
+| Metric | Value |
+|--------|-------|
+| Tasks completed | X |
+| Successful commits | X |
+| Tests added | X |
+| Bugs introduced | X |
 
-## Errores frecuentes
-1. <Error 1> (X ocurrencias)
-2. <Error 2> (X ocurrencias)
+## Frequent Errors
+1. <Error 1> (X occurrences)
+2. <Error 2> (X occurrences)
 
-## Mejoras sugeridas
-- <Mejora basada en errores detectados>
+## Suggested Improvements
+- <Improvement based on detected errors>
 ```
 
 ---
 
-## 14. Checklist de Implementación
+## 14. Implementation Checklist
 
-### 14.1 Mínimo Viable (Día 1)
+### 14.1 Minimum Viable (Day 1)
 
-- [ ] Crear `AGENTS.md` con comandos básicos y patrones
-- [ ] Documentar stack tecnológico
-- [ ] Listar archivos protegidos
-- [ ] Agregar ejemplos de código correcto vs incorrecto
-- [ ] Definir rutas TDD-obligatorias en config
+- [ ] Create `AGENTS.md` with basic commands and patterns
+- [ ] Document technology stack
+- [ ] List protected files
+- [ ] Add examples of correct vs incorrect code
+- [ ] Define TDD-mandatory paths in config
 
-### 14.2 Fundamentos (Semana 1)
+### 14.2 Foundations (Week 1)
 
-- [ ] Crear estructura `.agent/`
-- [ ] Escribir 3-5 ADRs para decisiones principales
-- [ ] Documentar invariantes críticas
-- [ ] Configurar slash commands básicos
-- [ ] Documentar ciclo TDD en AGENTS.md
-- [ ] Crear persona `tdd-enforcer`
+- [ ] Create `.agent/` structure
+- [ ] Write 3-5 ADRs for main decisions
+- [ ] Document critical invariants
+- [ ] Configure basic slash commands
+- [ ] Document TDD cycle in AGENTS.md
+- [ ] Create `tdd-enforcer` persona
 
-### 14.3 Optimización (Mes 1)
+### 14.3 Optimization (Month 1)
 
-- [ ] Agregar AGENTS.md por módulo
-- [ ] Crear personas especializadas
-- [ ] Documentar grafo de dependencias
-- [ ] Implementar métricas de efectividad
-- [ ] Configurar hook pre-commit para TDD
-- [ ] Establecer métricas de cumplimiento TDD
+- [ ] Add per-module AGENTS.md
+- [ ] Create specialized personas
+- [ ] Document dependency graph
+- [ ] Implement effectiveness metrics
+- [ ] Configure pre-commit hook for TDD
+- [ ] Establish TDD compliance metrics
 
-### 14.4 Madurez (Trimestre 1)
+### 14.4 Maturity (Quarter 1)
 
-- [ ] Tests como especificación ejecutable
-- [ ] Hooks de pre-commit automatizados
-- [ ] Feedback loop de mejora continua
-- [ ] Documentación generada automáticamente
-- [ ] 95%+ cumplimiento TDD sostenido
+- [ ] Tests as executable specification
+- [ ] Automated pre-commit hooks
+- [ ] Continuous improvement feedback loop
+- [ ] Automatically generated documentation
+- [ ] 95%+ sustained TDD compliance
 
 ---
 
-## 15. Ejemplo Completo
+## 15. Complete Example
 
-Repositorio de referencia con esta especificación implementada:
+Reference repository with this specification implemented:
 
 ```
-example-agentic-repo/
+example-dotagent-repo/
 ├── .agent/
 │   ├── config.yaml
 │   ├── commands/
@@ -997,7 +997,7 @@ example-agentic-repo/
 │   │   ├── test-module.md
 │   │   └── deploy.md
 │   ├── skills/
-│   │   └── <área>/SKILL.md
+│   │   └── <area>/SKILL.md
 │   ├── personas/
 │   │   ├── code-reviewer.md
 │   │   ├── security-auditor.md
@@ -1009,20 +1009,20 @@ example-agentic-repo/
 ├── docs/
 │   ├── architecture/
 │   │   ├── INDEX.md
-│   │   ├── 0001-<decisión>.md
-│   │   ├── 0002-<decisión>.md
+│   │   ├── 0001-<decision>.md
+│   │   ├── 0002-<decision>.md
 │   │   └── dependencies.yaml
 │   └── invariants/
 │       ├── INVARIANTS.md
-│       └── <módulo>.invariants.md
+│       └── <module>.invariants.md
 ├── src/
-│   ├── <módulo-1>/
+│   ├── <module-1>/
 │   │   ├── AGENTS.md
 │   │   ├── INVARIANTS.md
 │   │   ├── handler.ext
 │   │   ├── handler.test.ext
 │   │   └── examples.ext
-│   └── <módulo-2>/
+│   └── <module-2>/
 │       ├── AGENTS.md
 │       └── ...
 ├── tests/
@@ -1031,27 +1031,27 @@ example-agentic-repo/
 │   └── fixtures/
 ├── AGENTS.md
 ├── README.md
-└── <config de proyecto>
+└── <project config>
 ```
 
 ---
 
-## Apéndice A: Glosario
+## Appendix A: Glossary
 
-| Término | Definición |
-|---------|------------|
-| **ADR** | Architecture Decision Record. Documento que captura una decisión arquitectónica y su contexto. |
-| **Invariante** | Condición que debe mantenerse verdadera en todo momento del sistema. |
-| **Slash Command** | Comando personalizado invocable con `/nombre` en agentes. |
-| **Skill** | Conocimiento especializado empaquetado para un agente. |
-| **Persona** | Configuración que da al agente un rol especializado. |
-| **Token** | Unidad de texto procesada por el modelo (~4 caracteres). |
-| **Contexto** | Información disponible para el agente en una sesión. |
-| **TDD** | Test-Driven Development. Escribir tests antes de implementar. |
+| Term | Definition |
+|------|------------|
+| **ADR** | Architecture Decision Record. A document that captures an architectural decision and its context. |
+| **Invariant** | A condition that must remain true at all times in the system. |
+| **Slash Command** | A custom command invocable with `/name` in agents. |
+| **Skill** | Specialized knowledge packaged for an agent. |
+| **Persona** | A configuration that gives the agent a specialized role. |
+| **Token** | A unit of text processed by the model (~4 characters). |
+| **Context** | Information available to the agent in a session. |
+| **TDD** | Test-Driven Development. Writing tests before implementation. |
 
 ---
 
-## Apéndice B: Recursos
+## Appendix B: Resources
 
 - [AGENTS.md Standard](https://agentsmd.io)
 - [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
@@ -1060,18 +1060,18 @@ example-agentic-repo/
 
 ---
 
-## Apéndice C: Ejemplo de Implementación
+## Appendix C: Implementation Example
 
-Para ver un ejemplo concreto de esta especificación aplicada a un stack específico (TypeScript + Node.js), consulta el repositorio de referencia o solicita la generación de una plantilla para tu stack particular.
-
----
-
-## Historial de Versiones
-
-| Versión | Fecha | Cambios |
-|---------|-------|---------|
-| 1.0 | 2026-01-30 | Versión inicial (agnóstica de stack) |
+For a concrete example of this specification applied to a specific stack (TypeScript + Node.js), see the reference repository or request the generation of a template for your particular stack.
 
 ---
 
-*Esta especificación está diseñada para ser adaptada a cualquier stack tecnológico. Los principios son universales; los detalles de implementación varían según el lenguaje y framework.*
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0 | 2026-01-30 | Initial version (stack-agnostic) |
+
+---
+
+*This specification is designed to be adapted to any technology stack. The principles are universal; implementation details vary by language and framework.*
