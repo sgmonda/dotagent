@@ -7,7 +7,7 @@
 **A standard for structuring software repositories optimized for AI agent collaboration.**
 
 [![Spec](https://img.shields.io/badge/spec-v1.2-blue?style=flat-square)](doc/DOTAGENT.md)
-[![License](https://img.shields.io/badge/license-open%20source-green?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
 </div>
 
