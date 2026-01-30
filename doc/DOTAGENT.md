@@ -903,7 +903,194 @@ Before each commit, verify:
 
 ---
 
-## 13. Monitoring and Feedback
+## 13. Automatic Review Loop
+
+After an agent makes changes, a review cycle runs automatically until the code is approved. This ensures every change meets quality standards without human intervention at every step.
+
+### 13.1 How the Loop Works
+
+```
+Agent makes changes
+       │
+       ▼
+┌─────────────────────┐
+│  Run validations     │ ← tests, lint, type-check
+│  (automated checks)  │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Code Reviewer       │ ← agent switches to reviewer persona
+│  analyzes changes    │
+└──────────┬──────────┘
+           │
+     ┌─────┴─────┐
+     │            │
+  APPROVED    CHANGES REQUESTED
+     │            │
+     ▼            ▼
+  Continue    Agent applies
+  (commit     feedback and
+   or next    returns to top
+   task)      of loop
+              (max N iterations)
+```
+
+The loop has a configurable maximum number of iterations to prevent infinite cycles. If the reviewer still finds issues after the maximum, the agent stops and asks the human for guidance.
+
+### 13.2 Configuration
+
+```yaml
+# .agent/config.yaml
+
+review_loop:
+  enabled: true
+  max_iterations: 3
+
+  # Automated checks that run before the reviewer persona
+  pre_review_checks:
+    - command: "<test command>"
+      name: "tests"
+      required: true          # Blocks review if failing
+    - command: "<lint command>"
+      name: "lint"
+      required: true
+    - command: "<type-check command>"
+      name: "type-check"
+      required: false         # Warning only
+
+  # What the reviewer evaluates
+  review_criteria:
+    - "Correctness: does the code do what was requested?"
+    - "Tests: are new behaviors covered by tests?"
+    - "Invariants: are system invariants respected?"
+    - "Patterns: does the code follow project patterns from AGENTS.md?"
+    - "Security: are there obvious vulnerabilities?"
+
+  # What the reviewer ignores (to avoid nitpicking loops)
+  review_ignores:
+    - "Formatting and style (handled by linter)"
+    - "Minor naming preferences"
+    - "Comment wording"
+
+  # When to skip the loop entirely
+  skip_for:
+    - "docs/**"
+    - "*.md"
+    - "*.config.*"
+```
+
+### 13.3 Code Reviewer Persona
+
+`.agent/personas/code-reviewer.md`:
+
+```markdown
+---
+name: code-reviewer
+description: Reviews changes for correctness, patterns, and quality
+trigger: post-change
+---
+
+# Code Reviewer
+
+You are reviewing changes made by another agent (or yourself in a previous step).
+Your goal is to approve or request concrete improvements.
+
+## Review Process
+
+1. **Read the diff**: Understand what changed and why
+2. **Run checks**: Verify tests pass, lint is clean, types are correct
+3. **Evaluate against criteria**: Check each item from `review_criteria`
+4. **Verify invariants**: Read relevant INVARIANTS.md files for touched modules
+5. **Produce verdict**: APPROVED or CHANGES_REQUESTED
+
+## Verdict Format
+
+```
+## Review Verdict: <APPROVED|CHANGES_REQUESTED>
+
+### Summary
+<One sentence describing the overall quality>
+
+### Issues Found (if any)
+1. **[MUST FIX]** <issue description>
+   - File: <path>
+   - Suggestion: <concrete fix>
+
+2. **[MUST FIX]** <issue description>
+   - File: <path>
+   - Suggestion: <concrete fix>
+
+### Iteration: <current>/<max>
+```
+
+## Rules
+
+- Only use **[MUST FIX]** for real problems: bugs, missing tests, violated invariants, security issues
+- NEVER request changes for style, formatting, or preferences already handled by tooling
+- Be specific: every issue must include a concrete suggestion
+- If all checks pass and code is correct, APPROVE — do not invent problems
+- After max iterations, APPROVE with warnings if only minor issues remain
+```
+
+### 13.4 Post-Change Hook
+
+`.agent/hooks/post-change.md`:
+
+```markdown
+---
+name: post-change-review
+description: Triggers the review loop after code changes
+trigger: after_file_modify, after_file_create
+applies_to: "<source paths>"
+excludes: "<paths from review_loop.skip_for>"
+---
+
+# Post-Change Review Hook
+
+After modifying or creating source files:
+
+1. Collect all changed files since the task started
+2. Run `pre_review_checks` from config
+   - If a required check fails → fix the issue first (counts as a loop iteration)
+3. Switch to `code-reviewer` persona
+4. Evaluate the changes
+5. If CHANGES_REQUESTED:
+   - Switch back to implementer role
+   - Apply the suggested fixes
+   - Increment iteration counter
+   - Return to step 2
+6. If APPROVED:
+   - Proceed to commit or next task
+7. If max iterations reached without approval:
+   - Stop and report remaining issues to the user
+```
+
+### 13.5 Documenting in AGENTS.md
+
+Add this block to the project's `AGENTS.md`:
+
+```markdown
+## Review Loop
+
+After completing changes, switch to the `code-reviewer` persona and review your own work.
+Iterate until approved or max iterations (3) reached.
+
+### Cycle
+1. Make changes
+2. Run: `<test command> && <lint command>`
+3. Self-review as code-reviewer persona
+4. If issues found → fix and go to step 2
+5. If approved → commit
+
+### Review Criteria
+- Correctness, test coverage, invariants, project patterns, security
+- Ignore: formatting, style, naming preferences (linter handles these)
+```
+
+---
+
+## 14. Monitoring and Feedback
 
 ### 13.1 Session Logging
 
@@ -946,9 +1133,9 @@ feedback:
 
 ---
 
-## 14. Implementation Checklist
+## 15. Implementation Checklist
 
-### 14.1 Minimum Viable (Day 1)
+### 15.1 Minimum Viable (Day 1)
 
 - [ ] Create `AGENTS.md` with basic commands and patterns
 - [ ] Document technology stack
@@ -956,7 +1143,7 @@ feedback:
 - [ ] Add examples of correct vs incorrect code
 - [ ] Define TDD-mandatory paths in config
 
-### 14.2 Foundations (Week 1)
+### 15.2 Foundations (Week 1)
 
 - [ ] Create `.agent/` structure
 - [ ] Write 3-5 ADRs for main decisions
@@ -965,7 +1152,7 @@ feedback:
 - [ ] Document TDD cycle in AGENTS.md
 - [ ] Create `tdd-enforcer` persona
 
-### 14.3 Optimization (Month 1)
+### 15.3 Optimization (Month 1)
 
 - [ ] Add per-module AGENTS.md
 - [ ] Create specialized personas
@@ -974,17 +1161,18 @@ feedback:
 - [ ] Configure pre-commit hook for TDD
 - [ ] Establish TDD compliance metrics
 
-### 14.4 Maturity (Quarter 1)
+### 15.4 Maturity (Quarter 1)
 
 - [ ] Tests as executable specification
 - [ ] Automated pre-commit hooks
+- [ ] Configure automatic review loop
 - [ ] Continuous improvement feedback loop
 - [ ] Automatically generated documentation
 - [ ] 95%+ sustained TDD compliance
 
 ---
 
-## 15. Complete Example
+## 16. Complete Example
 
 Reference repository with this specification implemented:
 
@@ -1003,7 +1191,8 @@ example-dotagent-repo/
 │   │   ├── security-auditor.md
 │   │   └── tdd-enforcer.md
 │   ├── hooks/
-│   │   └── pre-commit-tdd.md
+│   │   ├── pre-commit-tdd.md
+│   │   └── post-change-review.md
 │   └── logs/
 │       └── tdd-metrics.md
 ├── docs/
@@ -1048,6 +1237,7 @@ example-dotagent-repo/
 | **Token** | A unit of text processed by the model (~4 characters). |
 | **Context** | Information available to the agent in a session. |
 | **TDD** | Test-Driven Development. Writing tests before implementation. |
+| **Review Loop** | Automatic cycle where the agent reviews its own changes, fixes issues, and re-reviews until approved or max iterations reached. |
 
 ---
 
@@ -1071,6 +1261,7 @@ For a concrete example of this specification applied to a specific stack (TypeSc
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2026-01-30 | Initial version (stack-agnostic) |
+| 1.1 | 2026-01-30 | Added automatic review loop (section 13) |
 
 ---
 

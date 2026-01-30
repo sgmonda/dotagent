@@ -53,7 +53,8 @@ To create the project I need:
 │   │   ├── security-auditor.md
 │   │   └── tdd-enforcer.md
 │   └── hooks/
-│       └── pre-commit.md
+│       ├── pre-commit.md
+│       └── post-change-review.md
 ├── docs/
 │   ├── architecture/
 │   │   ├── INDEX.md
@@ -152,6 +153,34 @@ security:
   forbidden_patterns:
     - pattern: "{DANGEROUS_PATTERN_1}"
       message: "{MESSAGE_1}"
+
+review_loop:
+  enabled: true
+  max_iterations: 3
+  pre_review_checks:
+    - command: "{TEST_COMMAND}"
+      name: "tests"
+      required: true
+    - command: "{LINT_COMMAND}"
+      name: "lint"
+      required: true
+    - command: "{TYPE_CHECK_COMMAND}"
+      name: "type-check"
+      required: false
+  review_criteria:
+    - "Correctness: does the code do what was requested?"
+    - "Tests: are new behaviors covered by tests?"
+    - "Invariants: are system invariants respected?"
+    - "Patterns: does the code follow project patterns from AGENTS.md?"
+    - "Security: are there obvious vulnerabilities?"
+  review_ignores:
+    - "Formatting and style (handled by linter)"
+    - "Minor naming preferences"
+    - "Comment wording"
+  skip_for:
+    - "docs/**"
+    - "*.md"
+    - "*.config.*"
 ```
 
 ### AGENTS.md (root)
@@ -216,6 +245,22 @@ For all code in `src/`:
 2. Verify it fails
 3. Implement minimum to make it pass
 4. Refactor
+
+## Review Loop
+
+After completing changes, switch to the `code-reviewer` persona and review your own work.
+Iterate until approved or max iterations (3) reached.
+
+### Cycle
+1. Make changes
+2. Run: `{TEST_COMMAND} && {LINT_COMMAND}`
+3. Self-review as code-reviewer persona
+4. If issues found → fix and go to step 2
+5. If approved → commit
+
+### Review Criteria
+- Correctness, test coverage, invariants, project patterns, security
+- Ignore: formatting, style, naming preferences (linter handles these)
 
 ## Restrictions
 - NEVER commit credentials or .env
@@ -354,48 +399,50 @@ If a violation is detected:
 ```markdown
 ---
 name: code-reviewer
-description: Reviews code for quality, patterns, and best practices
-trigger: on_request
+description: Reviews changes for correctness, patterns, and quality. Used automatically in the post-change review loop.
+trigger: post-change
 ---
 
 # Code Reviewer
 
-## Review Checklist
+You are reviewing changes made by another agent (or yourself in a previous step).
+Your goal is to approve or request concrete improvements.
 
-### Correctness
-- [ ] Is the logic correct?
-- [ ] Are all error cases handled?
-- [ ] Are there uncovered edge cases?
+## Review Process
 
-### Patterns
-- [ ] Does it follow patterns defined in AGENTS.md?
-- [ ] Does it respect system invariants?
-- [ ] Does it use existing helpers/utilities?
+1. **Read the diff**: Understand what changed and why
+2. **Run checks**: Verify tests pass, lint is clean, types are correct
+3. **Evaluate against criteria**: Check each item from `review_criteria` in config
+4. **Verify invariants**: Read relevant INVARIANTS.md files for touched modules
+5. **Produce verdict**: APPROVED or CHANGES_REQUESTED
 
-### Testing
-- [ ] Does it have tests?
-- [ ] Do tests cover success and error cases?
-- [ ] Are the tests readable?
-
-### Maintainability
-- [ ] Are names descriptive?
-- [ ] Do functions have single responsibility?
-- [ ] Is there duplicated code that should be extracted?
-
-## Feedback Format
+## Verdict Format
 
 ```
-## Summary
-{brief summary}
+## Review Verdict: <APPROVED|CHANGES_REQUESTED>
 
-## Issues
-- 🔴 **Critical**: {description}
-- 🟠 **Important**: {description}
-- 🟡 **Suggestion**: {description}
+### Summary
+<One sentence describing the overall quality>
 
-## Approval
-{Approved | Requires changes | Blocked}
+### Issues Found (if any)
+1. **[MUST FIX]** <issue description>
+   - File: <path>
+   - Suggestion: <concrete fix>
+
+2. **[MUST FIX]** <issue description>
+   - File: <path>
+   - Suggestion: <concrete fix>
+
+### Iteration: <current>/<max>
 ```
+
+## Rules
+
+- Only use **[MUST FIX]** for real problems: bugs, missing tests, violated invariants, security issues
+- NEVER request changes for style, formatting, or preferences already handled by tooling
+- Be specific: every issue must include a concrete suggestion
+- If all checks pass and code is correct, APPROVE — do not invent problems
+- After max iterations, APPROVE with warnings if only minor issues remain
 ```
 
 ### .agent/personas/security-auditor.md
@@ -485,6 +532,41 @@ When the user asks to test a module:
 2. Run: `{TEST_COMMAND} src/{module}/`
 3. Report results
 4. If there are failures, offer to fix
+```
+
+### .agent/hooks/post-change-review.md
+
+```markdown
+---
+name: post-change-review
+description: Triggers the automatic review loop after code changes
+trigger: after_file_modify, after_file_create
+applies_to:
+  - "src/**"
+excludes:
+  - "docs/**"
+  - "*.md"
+  - "*.config.*"
+---
+
+# Post-Change Review Hook
+
+After modifying or creating source files:
+
+1. Collect all changed files since the task started
+2. Run `pre_review_checks` from config
+   - If a required check fails → fix the issue first (counts as a loop iteration)
+3. Switch to `code-reviewer` persona
+4. Evaluate the changes
+5. If CHANGES_REQUESTED:
+   - Switch back to implementer role
+   - Apply the suggested fixes
+   - Increment iteration counter
+   - Return to step 2
+6. If APPROVED:
+   - Proceed to commit or next task
+7. If max iterations reached without approval:
+   - Stop and report remaining issues to the user
 ```
 
 ### README.md
@@ -709,6 +791,7 @@ Generated files:
 - .agent/config.yaml
 - .agent/commands/*.md
 - .agent/personas/*.md
+- .agent/hooks/post-change-review.md
 - docs/architecture/INDEX.md
 - docs/architecture/0001-stack-selection.md
 - docs/invariants/INVARIANTS.md
