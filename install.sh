@@ -105,26 +105,33 @@ fi
 # ── Scaffold project template files (first install only) ─────
 
 if [ "$IS_UPDATE" = false ]; then
-  # Only copy files that don't already exist
-  for f in AGENTS.md; do
-    if [ ! -f "$f" ]; then
-      cp "$TMPDIR/templates/$f" "$f"
-      echo "Created $f"
-    else
-      echo "Skipped $f (already exists)"
-    fi
-  done
-
-  # docs/ structure
-  if [ ! -d "docs/architecture" ]; then
-    mkdir -p docs/architecture
-    cp "$TMPDIR"/templates/docs/architecture/* docs/architecture/
-    echo "Created docs/architecture/"
+  # AGENTS.md → .dotagent/AGENTS.md
+  if [ ! -f "$DOTAGENT_DIR/AGENTS.md" ]; then
+    cp "$TMPDIR/templates/AGENTS.md" "$DOTAGENT_DIR/AGENTS.md"
   fi
-  if [ ! -d "docs/invariants" ]; then
-    mkdir -p docs/invariants
-    cp "$TMPDIR"/templates/docs/invariants/* docs/invariants/
-    echo "Created docs/invariants/"
+  if [ -L "AGENTS.md" ]; then
+    rm "AGENTS.md"
+  fi
+  if [ ! -e "AGENTS.md" ]; then
+    ln -s "$DOTAGENT_DIR/AGENTS.md" AGENTS.md
+    echo "Created symlink: AGENTS.md → $DOTAGENT_DIR/AGENTS.md"
+  fi
+
+  # docs/ → .dotagent/docs/
+  if [ ! -d "$DOTAGENT_DIR/docs/architecture" ]; then
+    mkdir -p "$DOTAGENT_DIR/docs/architecture"
+    cp "$TMPDIR"/templates/docs/architecture/* "$DOTAGENT_DIR/docs/architecture/"
+  fi
+  if [ ! -d "$DOTAGENT_DIR/docs/invariants" ]; then
+    mkdir -p "$DOTAGENT_DIR/docs/invariants"
+    cp "$TMPDIR"/templates/docs/invariants/* "$DOTAGENT_DIR/docs/invariants/"
+  fi
+  if [ -L "docs" ]; then
+    rm "docs"
+  fi
+  if [ ! -e "docs" ]; then
+    ln -s "$DOTAGENT_DIR/docs" docs
+    echo "Created symlink: docs → $DOTAGENT_DIR/docs"
   fi
 
   # Module-level AGENTS.md example
