@@ -45,7 +45,9 @@ docs/          # Documentation
 
 ## DOTAGENT
 
-This project follows [DOTAGENT](https://github.com/...) v{DOTAGENT_VERSION}, a specification for repositories optimized for AI agent development.
+This project follows [DOTAGENT](https://github.com/sgmonda/dotagent) v{DOTAGENT_VERSION}, a specification for repositories optimized for AI agent development.
+
+All DOTAGENT files live in `.dotagent/`. Update with `bash .dotagent/update.sh`.
 
 ### What does this mean?
 

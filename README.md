@@ -39,13 +39,34 @@ DOTAGENT bridges this gap. It defines a repository structure that maximizes agen
 
 ## Quick Start
 
-Copy the contents of the `skills/` directory into your agent's skills folder (`.agent/skills/`), then use the following skills:
+Run this in your project root:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/sgmonda/dotagent/main/install.sh | bash
+```
+
+That's it. Everything is installed under `.dotagent/` with symlinks so all agent tools find what they need:
 
 ```
-/dotagent-bootstrap     # Initialize a new project following the spec
-/dotagent-onboard       # Analyze an existing project and generate an agent briefing
-/dotagent-upgrade       # Upgrade to the latest spec version (non-destructive)
+your-project/
+├── .dotagent/                  # All DOTAGENT files live here
+│   ├── skills/                 # Agent skills
+│   ├── agent/                  # Agent config (config.yaml, commands, hooks, personas)
+│   ├── update.sh               # Run this to update DOTAGENT
+│   └── VERSION                 # Installed version
+├── .agent → .dotagent/agent    # Symlink (for agent tools)
+├── .claude/skills → …          # Symlink (for Claude Code)
+└── ...
 ```
+
+Then ask your agent:
+
+```
+/dotagent-bootstrap     # New project: scaffold structure + configure
+/dotagent-onboard       # Existing project: analyze + generate agent briefing
+```
+
+The first run installs everything and scaffolds project template files (`AGENTS.md`, `docs/`, etc.). Subsequent runs only update skills and agent configuration.
 
 Supported stacks: **Python + FastAPI** · **Go + Gin** · **TypeScript + Node** · **Rust** · **Java + Spring**
 
@@ -53,40 +74,20 @@ Supported stacks: **Python + FastAPI** · **Go + Gin** · **TypeScript + Node** 
 > The `/dotagent-onboard` skill may be automatically loaded by your agent on startup or when addressing a complex task. It can also be invoked manually at any time.
 
 > [!TIP]
-> **Updating existing projects:** Every bootstrapped project includes a `scripts/dotagent-update.sh` script that fetches the latest skills from this repository. Run it, then ask your agent to run `/dotagent-upgrade`:
-> ```bash
-> bash scripts/dotagent-update.sh
-> # then ask your agent: "run /dotagent-upgrade"
-> ```
-> If your project was created before this mechanism existed, just download the script manually:
-> ```bash
-> curl -fsSL https://raw.githubusercontent.com/sgmonda/dotagent/main/skills/dotagent-upgrade-SKILL.md \
->   -o .agent/skills/dotagent-upgrade-SKILL.md
-> # then ask your agent: "run /dotagent-upgrade"
-> ```
-
-### Claude Code Setup
-
-Claude Code looks for skills in `.claude/skills/`, not `.agent/skills/`. Create a symlink so both paths resolve:
-
-```bash
-mkdir -p .claude
-ln -s ../.agent/skills .claude/skills
-```
-
-Commit the symlink to the repository.
+> **Updating:** Run `bash .dotagent/update.sh` to fetch the latest skills and configuration, then ask your agent to run `/dotagent-upgrade`.
 
 ## Repository Structure
 
 ```
 dotagent/
+├── install.sh                   # One-line installer
 ├── doc/
 │   └── DOTAGENT.md              # Full specification
 ├── skills/
 │   ├── dotagent-bootstrap-SKILL.md
 │   ├── dotagent-onboard-SKILL.md
 │   └── dotagent-upgrade-SKILL.md
-└── .agent/                      # Example agent configuration
+└── templates/                   # Reference project structure
 ```
 
 ## Documentation
