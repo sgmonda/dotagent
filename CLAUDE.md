@@ -11,8 +11,8 @@ The specification is written primarily in Spanish with English code examples.
 ## Repository Structure
 
 - `doc/DOTAGENT.md` — The core specification (~1077 lines), covering directory structure, agent configuration, documentation standards, testing strategy, and security boundaries for agent-optimized projects.
-- `skills/agentic-bootstrap-SKILL.md` — Skill for initializing new projects following the spec (supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, Java+Spring).
-- `skills/agentic-onboard-SKILL.md` — Skill for analyzing existing projects and generating agent briefings.
+- `skills/dotagent-bootstrap-SKILL.md` — Skill for initializing new projects following the spec (supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, Java+Spring).
+- `skills/dotagent-onboard-SKILL.md` — Skill for analyzing existing projects and generating agent briefings.
 - `.agent/` — Example agent configuration directory.
 
 ## Key Concepts

@@ -1,5 +1,5 @@
 ---
-name: agentic-bootstrap
+name: dotagent-bootstrap
 description: Inicializa un proyecto nuevo siguiendo DOTAGENT v1.0. Crea estructura de directorios, configuración para agentes, documentación arquitectónica y módulo de ejemplo con TDD.
 ---
 

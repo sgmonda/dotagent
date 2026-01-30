@@ -4,10 +4,10 @@ This repository contains the specification for the dotagent framework, which def
 
 ## Usage
 
-Copy `skills` folder contents into your agent's skills directory to enable Agentic capabilities. Then:
+Copy `skills` folder contents into your agent's skills directory to enable dotagent capabilities. Then:
 
-- To start a new project, use the `/agentic-bootstrap` skill.
-- To understand an existing project, use the `/agentic-onboard` skill.
+- To start a new project, use the `/dotagent-bootstrap` skill.
+- To understand an existing project, use the `/dotagent-onboard` skill.
 
 > [!NOTE]
-> The skill `/agentic-onboard` may be automatically loaded by your agent on startup or when solving a complex problem. You can run it manually if needed.
+> The skill `/dotagent-onboard` may be automatically loaded by your agent on startup or when solving a complex problem. You can run it manually if needed.

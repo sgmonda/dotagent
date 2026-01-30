@@ -1,5 +1,5 @@
 ---
-name: agentic-onboard
+name: dotagent-onboard
 description: Analiza un proyecto existente y genera un briefing completo para orientar al agente. Usa al inicio de cada sesión o cuando llegues a un proyecto desconocido.
 ---
 
@@ -272,7 +272,7 @@ Recomendaciones:
 1. Revisar README.md para entender el proyecto
 2. Buscar documentación en /docs si existe
 3. Preguntar al usuario sobre patrones y restricciones
-4. Considerar ejecutar `/agentic-bootstrap` para estructurar
+4. Considerar ejecutar `/dotagent-bootstrap` para estructurar
 
 ---
 ⚠️ Onboarding parcial. Proceder con cautela.
