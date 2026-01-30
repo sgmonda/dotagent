@@ -172,7 +172,7 @@ The `AGENTS.md` file is the most critical document. It is what the agent reads a
 > ```
 > - If there are pending changes → inform the user
 > - If there are failing tests → inform before starting
-> - If the task is complex or the project is unknown → run full onboarding
+> - If the task is complex or the project is unknown → run full dotagent-onboard skill
 
 ## Project Identity
 <Brief description: what it is, main stack>

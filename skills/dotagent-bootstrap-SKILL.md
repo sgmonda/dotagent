@@ -168,7 +168,7 @@ security:
 > ```
 > - If there are pending changes → inform the user
 > - If there are failing tests → inform before starting
-> - If the task is complex or the project is unknown → run `/onboard`
+> - If the task is complex or the project is unknown → run `dotagent-onboard` skill
 
 ## Identity
 {PROJECT_NAME}: {BRIEF_DESCRIPTION}
