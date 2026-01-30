@@ -25,8 +25,8 @@ DOTAGENT bridges this gap. It defines a repository structure that maximizes agen
 
 Copy the contents of the `skills/` directory into your agent's skills folder, then:
 
-- **`/dotagent-bootstrap`** — Initialize a new project following the specification. Supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, and Java+Spring.
-- **`/dotagent-onboard`** — Analyze an existing project and generate a structured agent briefing.
+- **`/dotagent-bootstrap`** (*"use dotagent skill to bootstrap a project"*) — Initialize a new project following the specification. Supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, and Java+Spring.
+- **`/dotagent-onboard`** (*"use dotagent skill to onboard this project"*) — Analyze an existing project and generate a structured agent briefing.
 
 > [!NOTE]
 > The `/dotagent-onboard` skill may be automatically loaded by your agent on startup or when addressing a complex task. It can also be invoked manually at any time.
