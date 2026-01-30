@@ -2,7 +2,7 @@
 
 # DOTAGENT
 
-**Specification v1.1** — A standard for structuring software repositories optimized for AI agent collaboration.
+**Specification v1.1** ([`VERSION`](./VERSION)) — A standard for structuring software repositories optimized for AI agent collaboration.
 
 ---
 

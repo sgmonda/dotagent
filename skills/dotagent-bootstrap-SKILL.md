@@ -1,6 +1,6 @@
 ---
 name: dotagent-bootstrap
-description: Initializes a new project following DOTAGENT v1.0. Creates directory structure, agent configuration, architectural documentation, and an example module with TDD.
+description: Initializes a new project following DOTAGENT (see VERSION file). Creates directory structure, agent configuration, architectural documentation, and an example module with TDD.
 ---
 
 # DOTAGENT-BOOTSTRAP
@@ -234,10 +234,11 @@ conventions:
 
 ## Generation Process
 
-1. **Receive parameters** (stack, domain, name)
-2. **Select mapping** based on stack
-3. **Create directories** in order
-4. **Generate files** replacing placeholders
+1. **Read version** from the `VERSION` file at the repository root (`{DOTAGENT_VERSION}`)
+2. **Receive parameters** (stack, domain, name)
+3. **Select mapping** based on stack
+4. **Create directories** in order
+5. **Generate files** replacing placeholders (including `{DOTAGENT_VERSION}`)
 5. **Copy DOTAGENT skills** into `.agent/skills/` for future upgrades
 6. **Create `scripts/dotagent-update.sh`** and make it executable
 7. **Create example module** with test
@@ -247,7 +248,7 @@ conventions:
 ## Expected Output
 
 ```
-✅ Project {name} created with DOTAGENT v1.1
+✅ Project {name} created with DOTAGENT v{DOTAGENT_VERSION}
 
 Generated files:
 - .agent/config.yaml

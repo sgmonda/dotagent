@@ -29,8 +29,8 @@ Skill for upgrading existing projects to the latest DOTAGENT specification.
 Read `.agent/config.yaml` and check the `version` field:
 
 ```yaml
-# Current state
-version: "1.0"
+# Current state — read version from the project's .agent/config.yaml
+version: "{CURRENT_VERSION}"
 ```
 
 If `.agent/config.yaml` does not exist, abort and suggest running `dotagent-bootstrap` instead.

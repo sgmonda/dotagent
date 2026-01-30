@@ -45,7 +45,7 @@ docs/          # Documentation
 
 ## DOTAGENT
 
-This project follows [DOTAGENT](https://github.com/...) v1.0, a specification for repositories optimized for AI agent development.
+This project follows [DOTAGENT](https://github.com/...) v{DOTAGENT_VERSION}, a specification for repositories optimized for AI agent development.
 
 ### What does this mean?
 
