@@ -1,3 +1,5 @@
+<img width="1800" height="600" alt="header" src="https://github.com/user-attachments/assets/df8b0c2a-e3ab-4bdf-9dbb-6086684c84da" />
+
 # DOTAGENT
 
 **Specification v1.0** — A standard for structuring software repositories optimized for AI agent collaboration.
