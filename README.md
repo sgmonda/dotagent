@@ -24,7 +24,7 @@ DOTAGENT bridges this gap. It defines a repository structure that maximizes agen
 
 ## Getting Started
 
-Copy the contents of the `skills/` directory into your agent's skills folder, then:
+Copy the contents of the `skills/` directory into your agent's skills folder (`.agent/skills/`), then:
 
 - **`/dotagent-bootstrap`** (*"use dotagent skill to bootstrap a project"*) — Initialize a new project following the specification. Supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, and Java+Spring.
 - **`/dotagent-onboard`** (*"use dotagent skill to onboard this project"*) — Analyze an existing project and generate a structured agent briefing.
@@ -44,6 +44,17 @@ Copy the contents of the `skills/` directory into your agent's skills folder, th
 > curl -fsSL https://raw.githubusercontent.com/sgmonda/dotagent/main/skills/dotagent-upgrade-SKILL.md -o .agent/skills/dotagent-upgrade-SKILL.md
 > # then ask your agent: "run /dotagent-upgrade"
 > ```
+
+### Claude Code Setup
+
+Claude Code looks for skills in `.claude/skills/`, not `.agent/skills/`. Create a symlink so both paths point to the same place:
+
+```bash
+mkdir -p .claude
+ln -s ../.agent/skills .claude/skills
+```
+
+This way skills are maintained in `.agent/skills/` (the DOTAGENT standard location) and Claude Code picks them up automatically. The symlink should be committed to the repository.
 
 ## Repository Structure
 
