@@ -1,13 +1,52 @@
-# dotagent
+# DOTAGENT
 
-This repository contains the specification for the dotagent framework, which defines the architecture and protocols for building software projects by AI agents.
+**Specification v1.0** — A standard for structuring software repositories optimized for AI agent collaboration.
 
-## Usage
+---
 
-Copy `skills` folder contents into your agent's skills directory to enable dotagent capabilities. Then:
+## The Problem
 
-- To start a new project, use the `/dotagent-bootstrap` skill.
-- To understand an existing project, use the `/dotagent-onboard` skill.
+Modern development practices — clean code, SOLID, DRY — were designed for human cognition: long-term memory, implicit context, and the ability to read between the lines. AI agents operate under fundamentally different constraints: no memory between sessions, limited context windows, and a strict dependence on what is explicitly written.
+
+DOTAGENT bridges this gap. It defines a repository structure that maximizes agent effectiveness without sacrificing human maintainability.
+
+## What DOTAGENT Defines
+
+- **`.agent/` directory** — Centralized agent configuration: commands, skills, personas, and hooks.
+- **`AGENTS.md` hierarchy** — Layered instructions from project-wide rules to module-specific overrides, following a locality principle.
+- **Architecture Decision Records (ADRs)** — Structured capture of the *why* behind decisions, critical for agents that lack cross-session memory.
+- **System invariants** — Hard boundaries that must never be violated, with concrete code examples.
+- **TDD-first workflow** — Tests as verifiable contracts that anchor agent reasoning and prevent functional hallucinations.
+- **Security boundaries** — Protected files, forbidden patterns, and operational limits.
+
+## Getting Started
+
+Copy the contents of the `skills/` directory into your agent's skills folder, then:
+
+- **`/dotagent-bootstrap`** — Initialize a new project following the specification. Supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, and Java+Spring.
+- **`/dotagent-onboard`** — Analyze an existing project and generate a structured agent briefing.
 
 > [!NOTE]
-> The skill `/dotagent-onboard` may be automatically loaded by your agent on startup or when solving a complex problem. You can run it manually if needed.
+> The `/dotagent-onboard` skill may be automatically loaded by your agent on startup or when addressing a complex task. It can also be invoked manually at any time.
+
+## Repository Structure
+
+```
+dotagent/
+├── doc/
+│   └── DOTAGENT.md          # Full specification (~1077 lines)
+├── skills/
+│   ├── dotagent-bootstrap-SKILL.md
+│   └── dotagent-onboard-SKILL.md
+└── .agent/                   # Example agent configuration
+```
+
+## Documentation
+
+The complete specification is available at [`doc/DOTAGENT.md`](doc/DOTAGENT.md). It covers directory structure, agent configuration, documentation standards, testing strategy, TDD enforcement, and security boundaries.
+
+The specification is written in Spanish with English code examples.
+
+## License
+
+This project is open source. See [LICENSE](LICENSE) for details.
