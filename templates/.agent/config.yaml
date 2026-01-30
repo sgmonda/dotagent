@@ -1,0 +1,97 @@
+version: "1.1"
+
+dotagent:
+  source: "https://github.com/sgmonda/dotagent"
+  branch: "main"
+
+project:
+  name: "{PROJECT_NAME}"
+  type: "{TYPE: web-application|api|library|cli|mobile}"
+  primary_language: "{LANGUAGE}"
+
+stack:
+  runtime: "{RUNTIME_VERSION}"
+  framework: "{FRAMEWORK_VERSION}"
+  database: "{DATABASE_VERSION}"
+  orm: "{ORM}"
+  testing: "{TEST_FRAMEWORK}"
+
+commands:
+  build: "{BUILD_COMMAND}"
+  test: "{TEST_COMMAND}"
+  test_single: "{TEST_SINGLE_COMMAND}"
+  lint: "{LINT_COMMAND}"
+  format: "{FORMAT_COMMAND}"
+  type_check: "{TYPE_CHECK_COMMAND}"
+
+paths:
+  source: "src/"
+  tests: "tests/"
+
+conventions:
+  naming:
+    files: "{FILE_CONVENTION}"
+    functions: "{FUNCTION_CONVENTION}"
+    constants: "{CONSTANT_CONVENTION}"
+
+  imports:
+    order: ["{IMPORT_ORDER}"]
+
+testing:
+  tdd:
+    required_for:
+      - "src/**"
+    recommended_for: []
+    optional_for:
+      - "scripts/**"
+
+    thresholds:
+      coverage_required: 80
+      test_first_ratio: 80
+
+boundaries:
+  never_modify:
+    - ".env*"
+    - "*.lock"
+    - "{PROTECTED_FILES}"
+
+  ask_before_modifying:
+    - "{MAIN_CONFIG}"
+    - ".github/workflows/**"
+
+  safe_to_modify:
+    - "src/**"
+    - "tests/**"
+
+security:
+  forbidden_patterns:
+    - pattern: "{DANGEROUS_PATTERN_1}"
+      message: "{MESSAGE_1}"
+
+review_loop:
+  enabled: true
+  max_iterations: 3
+  pre_review_checks:
+    - command: "{TEST_COMMAND}"
+      name: "tests"
+      required: true
+    - command: "{LINT_COMMAND}"
+      name: "lint"
+      required: true
+    - command: "{TYPE_CHECK_COMMAND}"
+      name: "type-check"
+      required: false
+  review_criteria:
+    - "Correctness: does the code do what was requested?"
+    - "Tests: are new behaviors covered by tests?"
+    - "Invariants: are system invariants respected?"
+    - "Patterns: does the code follow project patterns from AGENTS.md?"
+    - "Security: are there obvious vulnerabilities?"
+  review_ignores:
+    - "Formatting and style (handled by linter)"
+    - "Minor naming preferences"
+    - "Comment wording"
+  skip_for:
+    - "docs/**"
+    - "*.md"
+    - "*.config.*"
