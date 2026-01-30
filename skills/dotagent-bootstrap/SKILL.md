@@ -256,8 +256,7 @@ conventions:
 4. **Create directories** in order
 5. **Generate files** replacing placeholders (including `{DOTAGENT_VERSION}`)
 5. **Copy DOTAGENT skills** into `.agent/skills/` for future upgrades
-6. **Create `scripts/dotagent-update.sh`** and make it executable
-7. **Create example module** with test
+6. **Create example module** with test
 8. **Verify** generated structure
 9. **Report** created files
 
@@ -272,7 +271,6 @@ Generated files:
 - .agent/personas/*.md
 - .agent/hooks/post-change-review.md
 - .agent/skills/*.md
-- scripts/dotagent-update.sh
 - docs/architecture/INDEX.md
 - docs/architecture/0001-stack-selection.md
 - docs/invariants/INVARIANTS.md
@@ -288,5 +286,5 @@ Next steps:
 3. Start development following TDD
 
 To update DOTAGENT in the future:
-  bash scripts/dotagent-update.sh && ask agent to run /dotagent-upgrade
+  bash .dotagent/update.sh && ask agent to run /dotagent-upgrade
 ```
