@@ -24,6 +24,19 @@ Skill for upgrading existing projects to the latest DOTAGENT specification.
 
 ## Upgrade Process
 
+### Step 0: Update DOTAGENT Files
+
+Run the update script to fetch the latest skills and agent config:
+
+```bash
+bash .dotagent/update.sh
+```
+
+If `.dotagent/update.sh` does not exist, abort and suggest running the install command first:
+```
+curl -fsSL https://raw.githubusercontent.com/sgmonda/dotagent/main/install.sh | bash
+```
+
 ### Step 1: Detect Current Version
 
 Read `.agent/config.yaml` and check the `version` field:
