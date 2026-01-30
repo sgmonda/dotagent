@@ -1,4 +1,4 @@
-# AGENTIC-SPEC v1.0
+# DOTAGENT v1.0
 
 ## Especificación para Repositorios Gestionados por Agentes de IA
 

@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AGENTIC-SPEC is a specification and reference framework (v1.0) that defines how to structure software repositories for effective AI agent collaboration. It is not an application — it contains no executable code, no build system, and no tests. The repository holds markdown specifications, reusable agent skills, and reference templates.
+DOTAGENT is a specification and reference framework (v1.0) that defines how to structure software repositories for effective AI agent collaboration. It is not an application — it contains no executable code, no build system, and no tests. The repository holds markdown specifications, reusable agent skills, and reference templates.
 
 The specification is written primarily in Spanish with English code examples.
 
 ## Repository Structure
 
-- `doc/AGENTIC-SPEC.md` — The core specification (~1077 lines), covering directory structure, agent configuration, documentation standards, testing strategy, and security boundaries for agent-optimized projects.
+- `doc/DOTAGENT.md` — The core specification (~1077 lines), covering directory structure, agent configuration, documentation standards, testing strategy, and security boundaries for agent-optimized projects.
 - `skills/agentic-bootstrap-SKILL.md` — Skill for initializing new projects following the spec (supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, Java+Spring).
 - `skills/agentic-onboard-SKILL.md` — Skill for analyzing existing projects and generating agent briefings.
 - `.agent/` — Example agent configuration directory.

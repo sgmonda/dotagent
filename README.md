@@ -1,6 +1,6 @@
-# Agentic spec
+# dotagent
 
-This repository contains the specification for the Agentic framework, which defines the architecture and protocols for building software projects by AI agents.
+This repository contains the specification for the dotagent framework, which defines the architecture and protocols for building software projects by AI agents.
 
 ## Usage
 

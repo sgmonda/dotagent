@@ -1,6 +1,6 @@
 ---
 name: agentic-bootstrap
-description: Inicializa un proyecto nuevo siguiendo AGENTIC-SPEC v1.0. Crea estructura de directorios, configuración para agentes, documentación arquitectónica y módulo de ejemplo con TDD.
+description: Inicializa un proyecto nuevo siguiendo DOTAGENT v1.0. Crea estructura de directorios, configuración para agentes, documentación arquitectónica y módulo de ejemplo con TDD.
 ---
 
 # AGENTIC-BOOTSTRAP
@@ -535,9 +535,9 @@ docs/          # Documentación
 
 ---
 
-## 🤖 AGENTIC-SPEC
+## 🤖 DOTAGENT
 
-Este proyecto sigue [AGENTIC-SPEC](https://github.com/...) v1.0, una especificación para repositorios optimizados para desarrollo con agentes de IA.
+Este proyecto sigue [DOTAGENT](https://github.com/...) v1.0, una especificación para repositorios optimizados para desarrollo con agentes de IA.
 
 ### ¿Qué significa esto?
 
@@ -703,7 +703,7 @@ conventions:
 ## Output Esperado
 
 ```
-✅ Proyecto {nombre} creado con AGENTIC-SPEC v1.0
+✅ Proyecto {nombre} creado con DOTAGENT v1.0
 
 Archivos generados:
 - .agent/config.yaml

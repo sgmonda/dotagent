@@ -5,7 +5,7 @@ description: Analiza un proyecto existente y genera un briefing completo para or
 
 # AGENTIC-ONBOARD
 
-Skill para orientar agentes en proyectos existentes siguiendo AGENTIC-SPEC.
+Skill para orientar agentes en proyectos existentes siguiendo DOTAGENT.
 
 ## Cuándo Usar
 
@@ -28,7 +28,7 @@ Buscar en orden de prioridad:
 5. docs/invariants/        → Reglas inviolables
 ```
 
-Si existe `.agent/config.yaml`, el proyecto sigue AGENTIC-SPEC.
+Si existe `.agent/config.yaml`, el proyecto sigue DOTAGENT.
 Si no existe, inferir información de archivos estándar.
 
 ### Fase 2: Análisis del Proyecto
@@ -240,7 +240,7 @@ Alertar sobre:
 
 ---
 
-## Briefing Mínimo (proyecto sin AGENTIC-SPEC)
+## Briefing Mínimo (proyecto sin DOTAGENT)
 
 Si el proyecto no sigue la spec, generar briefing reducido:
 
@@ -265,9 +265,9 @@ Si el proyecto no sigue la spec, generar briefing reducido:
 - **Branch**: {branch}
 - **Último commit**: {commit}
 
-## ⚠️ Proyecto sin AGENTIC-SPEC
+## ⚠️ Proyecto sin DOTAGENT
 
-Este proyecto no sigue la especificación AGENTIC-SPEC.
+Este proyecto no sigue la especificación DOTAGENT.
 Recomendaciones:
 1. Revisar README.md para entender el proyecto
 2. Buscar documentación en /docs si existe
