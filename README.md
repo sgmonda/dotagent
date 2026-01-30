@@ -34,7 +34,16 @@ Copy the contents of the `skills/` directory into your agent's skills folder, th
 > The `/dotagent-onboard` skill may be automatically loaded by your agent on startup or when addressing a complex task. It can also be invoked manually at any time.
 
 > [!TIP]
-> When a new version of the specification is released, run `/dotagent-upgrade` on your existing projects to pick up the new features incrementally.
+> **Updating existing projects:** Every bootstrapped project includes a `scripts/dotagent-update.sh` script that fetches the latest skills from this repository. Run it, then ask your agent to run `/dotagent-upgrade`:
+> ```bash
+> bash scripts/dotagent-update.sh
+> # then ask your agent: "run /dotagent-upgrade"
+> ```
+> If your project was created before this mechanism existed, just download the script manually:
+> ```bash
+> curl -fsSL https://raw.githubusercontent.com/sgmonda/dotagent/main/skills/dotagent-upgrade-SKILL.md -o .agent/skills/dotagent-upgrade-SKILL.md
+> # then ask your agent: "run /dotagent-upgrade"
+> ```
 
 ## Repository Structure
 

@@ -74,6 +74,7 @@ To create the project I need:
 │   └── helpers/
 │       └── .gitkeep
 ├── scripts/
+│   ├── dotagent-update.sh
 │   └── .gitkeep
 ├── AGENTS.md
 ├── README.md
@@ -88,7 +89,11 @@ To create the project I need:
 ### .agent/config.yaml
 
 ```yaml
-version: "1.0"
+version: "1.1"
+
+dotagent:
+  source: "https://github.com/sgmonda/dotagent"
+  branch: "main"
 
 project:
   name: "{PROJECT_NAME}"
@@ -569,6 +574,37 @@ After modifying or creating source files:
    - Stop and report remaining issues to the user
 ```
 
+### scripts/dotagent-update.sh
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Updates DOTAGENT skills from the source repository.
+# Run this to get the latest skills, then use /dotagent-upgrade
+# to apply spec changes to the project.
+
+DOTAGENT_SOURCE="${DOTAGENT_SOURCE:-https://github.com/sgmonda/dotagent}"
+DOTAGENT_BRANCH="${DOTAGENT_BRANCH:-main}"
+SKILLS_DIR=".agent/skills"
+TMPDIR=$(mktemp -d)
+
+cleanup() { rm -rf "$TMPDIR"; }
+trap cleanup EXIT
+
+echo "Fetching DOTAGENT from $DOTAGENT_SOURCE ($DOTAGENT_BRANCH)..."
+git clone --depth 1 --branch "$DOTAGENT_BRANCH" "$DOTAGENT_SOURCE" "$TMPDIR" 2>/dev/null
+
+mkdir -p "$SKILLS_DIR"
+cp "$TMPDIR"/skills/*.md "$SKILLS_DIR/"
+
+echo ""
+echo "Updated skills:"
+ls -1 "$SKILLS_DIR"/*.md
+echo ""
+echo "Done. Now ask your agent to run /dotagent-upgrade"
+```
+
 ### README.md
 
 ```markdown
@@ -778,20 +814,24 @@ conventions:
 2. **Select mapping** based on stack
 3. **Create directories** in order
 4. **Generate files** replacing placeholders
-5. **Create example module** with test
-6. **Verify** generated structure
-7. **Report** created files
+5. **Copy DOTAGENT skills** into `.agent/skills/` for future upgrades
+6. **Create `scripts/dotagent-update.sh`** and make it executable
+7. **Create example module** with test
+8. **Verify** generated structure
+9. **Report** created files
 
 ## Expected Output
 
 ```
-✅ Project {name} created with DOTAGENT v1.0
+✅ Project {name} created with DOTAGENT v1.1
 
 Generated files:
 - .agent/config.yaml
 - .agent/commands/*.md
 - .agent/personas/*.md
 - .agent/hooks/post-change-review.md
+- .agent/skills/*.md
+- scripts/dotagent-update.sh
 - docs/architecture/INDEX.md
 - docs/architecture/0001-stack-selection.md
 - docs/invariants/INVARIANTS.md
@@ -805,4 +845,7 @@ Next steps:
 1. Review .agent/config.yaml and adjust if needed
 2. Run `{test_command}` to verify setup
 3. Start development following TDD
+
+To update DOTAGENT in the future:
+  bash scripts/dotagent-update.sh && ask agent to run /dotagent-upgrade
 ```
