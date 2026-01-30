@@ -2,7 +2,7 @@
 
 # DOTAGENT
 
-**Specification v1.0** — A standard for structuring software repositories optimized for AI agent collaboration.
+**Specification v1.1** — A standard for structuring software repositories optimized for AI agent collaboration.
 
 ---
 
@@ -19,6 +19,7 @@ DOTAGENT bridges this gap. It defines a repository structure that maximizes agen
 - **Architecture Decision Records (ADRs)** — Structured capture of the *why* behind decisions, critical for agents that lack cross-session memory.
 - **System invariants** — Hard boundaries that must never be violated, with concrete code examples.
 - **TDD-first workflow** — Tests as verifiable contracts that anchor agent reasoning and prevent functional hallucinations.
+- **Automatic review loop** — After every change, the agent self-reviews as a code reviewer persona, iterating until the code is approved or a max iteration limit is reached.
 - **Security boundaries** — Protected files, forbidden patterns, and operational limits.
 
 ## Getting Started
@@ -27,9 +28,13 @@ Copy the contents of the `skills/` directory into your agent's skills folder, th
 
 - **`/dotagent-bootstrap`** (*"use dotagent skill to bootstrap a project"*) — Initialize a new project following the specification. Supports Python+FastAPI, Go+Gin, TypeScript+Node, Rust, and Java+Spring.
 - **`/dotagent-onboard`** (*"use dotagent skill to onboard this project"*) — Analyze an existing project and generate a structured agent briefing.
+- **`/dotagent-upgrade`** (*"use dotagent skill to upgrade this project"*) — Upgrade an existing DOTAGENT project to the latest spec version. Non-destructive: only adds what's missing, never overwrites customizations.
 
 > [!NOTE]
 > The `/dotagent-onboard` skill may be automatically loaded by your agent on startup or when addressing a complex task. It can also be invoked manually at any time.
+
+> [!TIP]
+> When a new version of the specification is released, run `/dotagent-upgrade` on your existing projects to pick up the new features incrementally.
 
 ## Repository Structure
 
@@ -39,13 +44,14 @@ dotagent/
 │   └── DOTAGENT.md          # Full specification (~1077 lines)
 ├── skills/
 │   ├── dotagent-bootstrap-SKILL.md
-│   └── dotagent-onboard-SKILL.md
+│   ├── dotagent-onboard-SKILL.md
+│   └── dotagent-upgrade-SKILL.md
 └── .agent/                   # Example agent configuration
 ```
 
 ## Documentation
 
-The complete specification is available at [`doc/DOTAGENT.md`](doc/DOTAGENT.md). It covers directory structure, agent configuration, documentation standards, testing strategy, TDD enforcement, and security boundaries.
+The complete specification is available at [`doc/DOTAGENT.md`](doc/DOTAGENT.md). It covers directory structure, agent configuration, documentation standards, testing strategy, TDD enforcement, automatic review loops, and security boundaries.
 
 The complete specification is written in English.
 

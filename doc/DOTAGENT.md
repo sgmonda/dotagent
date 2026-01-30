@@ -1238,6 +1238,7 @@ example-dotagent-repo/
 | **Context** | Information available to the agent in a session. |
 | **TDD** | Test-Driven Development. Writing tests before implementation. |
 | **Review Loop** | Automatic cycle where the agent reviews its own changes, fixes issues, and re-reviews until approved or max iterations reached. |
+| **Upgrade** | Incremental, non-destructive process to bring an existing project up to the latest spec version. |
 
 ---
 
