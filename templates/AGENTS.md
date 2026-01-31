@@ -1,8 +1,12 @@
 # AGENTS.md
 
-> **SESSION START**
+> **SESSION START — Read this entire file carefully before doing anything.**
 >
-> Before any task, run your project's test command and check git status.
+> You MUST follow ALL rules in this file for every task. Key obligations:
+> - **TDD is mandatory**: write tests before implementation (see Mandatory TDD section)
+> - **Review loop is mandatory**: after every code change, run the review loop (see Review Loop section below)
+>
+> Before your first task, run your project's test command and check git status.
 > - If there are pending changes → inform the user
 > - If there are failing tests → inform before starting
 > - If the task is complex or the project is unknown → run `dotagent-onboard` skill
