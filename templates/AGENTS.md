@@ -58,21 +58,30 @@ For all code in `src/`:
 3. Implement minimum to make it pass
 4. Refactor
 
-## Review Loop
+## Review Loop (MANDATORY)
 
-After completing changes, switch to the `code-reviewer` persona and review your own work.
-Iterate until approved or max iterations (3) reached.
+After completing ANY code change in `src/`, you MUST execute this loop before reporting the task as done. Do NOT skip this. Do NOT ask the user whether to run it. Just do it.
 
-### Cycle
-1. Make changes
-2. Run: `{TEST_COMMAND} && {LINT_COMMAND}`
-3. Self-review as code-reviewer persona
-4. If issues found → fix and go to step 2
-5. If approved → commit
+### Steps
+1. Run validations:
+   ```bash
+   {TEST_COMMAND} && {LINT_COMMAND}
+   ```
+   If any required check fails → fix the issue and re-run. This counts as one iteration.
 
-### Review Criteria
-- Correctness, test coverage, invariants, project patterns, security
-- Ignore: formatting, style, naming preferences (linter handles these)
+2. Review your own changes by reading the diff (`git diff`) and evaluating:
+   - **Correctness**: does the code do what was requested?
+   - **Tests**: are new behaviors covered by tests?
+   - **Invariants**: are rules in `docs/invariants/INVARIANTS.md` respected?
+   - **Patterns**: does the code follow patterns defined in this file and module-level AGENTS.md files?
+   - **Security**: are there obvious vulnerabilities?
+   - **IGNORE**: formatting, style, naming preferences (the linter handles these)
+
+3. If you find real issues (bugs, missing tests, violated invariants, security problems) → fix them and go back to step 1.
+
+4. If no real issues remain → the loop is done. Proceed to report or commit.
+
+**Max iterations: 3.** If after 3 iterations there are still issues, stop and report them to the user.
 
 ## Restrictions
 - NEVER commit credentials or .env
