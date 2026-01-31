@@ -1,5 +1,7 @@
 # AGENTS.md
 
+<!-- DOTAGENT:BEGIN — managed by dotagent, do not edit manually -->
+
 > **SESSION START**
 >
 > Before any task, run:
@@ -92,3 +94,5 @@ After completing ANY code change in `src/`, you MUST execute this loop before re
 1. Run `{LINT_COMMAND}`
 2. Run `{TEST_COMMAND}`
 3. Review `docs/architecture/` if there are design questions
+
+<!-- DOTAGENT:END -->

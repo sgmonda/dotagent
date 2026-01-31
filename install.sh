@@ -102,21 +102,39 @@ if [ ! -e ".claude/skills" ]; then
   echo "Created symlink: .claude/skills → $DOTAGENT_DIR/skills"
 fi
 
+# ── Update AGENTS.md (managed block) ─────────────────────────
+
+AGENTS_FILE="$DOTAGENT_DIR/AGENTS.md"
+TEMPLATE_AGENTS="$TMPDIR/templates/AGENTS.md"
+BEGIN_MARKER="<!-- DOTAGENT:BEGIN"
+END_MARKER="<!-- DOTAGENT:END -->"
+
+if [ -f "$AGENTS_FILE" ] && grep -q "$BEGIN_MARKER" "$AGENTS_FILE"; then
+  # Extract new managed block from template
+  NEW_BLOCK=$(sed -n "/$BEGIN_MARKER/,/$END_MARKER/p" "$TEMPLATE_AGENTS")
+  # Replace managed block, preserve everything outside
+  BEFORE=$(sed "/$BEGIN_MARKER/,\$d" "$AGENTS_FILE")
+  AFTER=$(sed "1,/$END_MARKER/d" "$AGENTS_FILE")
+  printf '%s\n%s\n%s' "$BEFORE" "$NEW_BLOCK" "$AFTER" > "$AGENTS_FILE"
+  echo "Updated managed block in AGENTS.md"
+else
+  # First install or no markers: copy template as-is
+  cp "$TEMPLATE_AGENTS" "$AGENTS_FILE"
+  echo "Created AGENTS.md"
+fi
+
+# Symlink: AGENTS.md → .dotagent/AGENTS.md
+if [ -L "AGENTS.md" ]; then
+  rm "AGENTS.md"
+fi
+if [ ! -e "AGENTS.md" ]; then
+  ln -s "$DOTAGENT_DIR/AGENTS.md" AGENTS.md
+  echo "Created symlink: AGENTS.md → $DOTAGENT_DIR/AGENTS.md"
+fi
+
 # ── Scaffold project template files (first install only) ─────
 
 if [ "$IS_UPDATE" = false ]; then
-  # AGENTS.md → .dotagent/AGENTS.md
-  if [ ! -f "$DOTAGENT_DIR/AGENTS.md" ]; then
-    cp "$TMPDIR/templates/AGENTS.md" "$DOTAGENT_DIR/AGENTS.md"
-  fi
-  if [ -L "AGENTS.md" ]; then
-    rm "AGENTS.md"
-  fi
-  if [ ! -e "AGENTS.md" ]; then
-    ln -s "$DOTAGENT_DIR/AGENTS.md" AGENTS.md
-    echo "Created symlink: AGENTS.md → $DOTAGENT_DIR/AGENTS.md"
-  fi
-
   # docs/ → .dotagent/docs/
   if [ ! -d "$DOTAGENT_DIR/docs/architecture" ]; then
     mkdir -p "$DOTAGENT_DIR/docs/architecture"

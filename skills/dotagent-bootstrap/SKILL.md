@@ -73,9 +73,6 @@ To create the project I need:
 │   │   └── .gitkeep
 │   └── helpers/
 │       └── .gitkeep
-├── scripts/
-│   ├── dotagent-update.sh
-│   └── .gitkeep
 ├── AGENTS.md
 ├── README.md
 ├── .gitignore
@@ -107,8 +104,6 @@ templates/
 │   │   └── 0001-stack-selection.md
 │   └── invariants/
 │       └── INVARIANTS.md
-├── scripts/
-│   └── dotagent-update.sh
 ├── src/
 │   └── _module_/
 │       └── AGENTS.md
@@ -117,6 +112,8 @@ templates/
 ```
 
 Read each template file, replace `{PLACEHOLDER}` values with the project-specific information, and write the result to the corresponding path in the generated project.
+
+**IMPORTANT**: The `AGENTS.md` template contains `<!-- DOTAGENT:BEGIN -->` and `<!-- DOTAGENT:END -->` markers. You MUST preserve these markers in the generated file. The content between them is managed by dotagent and will be updated automatically on future upgrades. Users can add custom content outside the markers.
 
 ### Example Module
 

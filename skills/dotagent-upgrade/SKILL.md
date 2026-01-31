@@ -131,13 +131,14 @@ When a persona needs updating (e.g., `code-reviewer.md` gaining review loop supp
 3. If NOT present → replace with the new template, preserving any custom review criteria the user added
 4. If already present → skip
 
-#### AGENTS.md additions
-Append new sections to the project's `AGENTS.md` without modifying existing content:
+#### AGENTS.md managed block
+The `AGENTS.md` file uses `<!-- DOTAGENT:BEGIN -->` / `<!-- DOTAGENT:END -->` markers. The content between them is managed by dotagent; content outside is user-owned.
 
 1. Read current `AGENTS.md`
-2. Check if the section already exists (search for the section header)
-3. If NOT present → append before "## Restrictions" (or at the end if no restrictions section)
-4. If already present → skip
+2. Read the latest template from `.dotagent/skills/dotagent-bootstrap/` (or the installed templates)
+3. Replace `{PLACEHOLDER}` values using the project's existing `config.yaml`
+4. Replace the block between markers with the new content
+5. Preserve everything outside the markers
 
 ### Step 5: Update Version
 
