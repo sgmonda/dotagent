@@ -56,15 +56,17 @@ For all code in `src/`:
 3. Implement minimum to make it pass
 4. Refactor
 
-## Review Loop (MANDATORY)
+## ⚠️ Review Loop — MANDATORY, DO NOT SKIP
 
-After completing ANY code change in `src/`, you MUST execute this loop before reporting the task as done. Do NOT skip this. Do NOT ask the user whether to run it. Just do it.
+**CRITICAL INSTRUCTION**: After completing ANY code change, you MUST run this review loop BEFORE telling the user the task is done. This is not optional. Do not ask permission. Do not skip it. Execute it every single time.
+
+**Tell the user you are starting the review loop** by printing: `🔄 Starting review loop (iteration 1/3)...`
 
 ### Steps
-1. Run validations: execute the project's test and lint commands (see Commands section above).
-   If any required check fails → fix the issue and re-run. This counts as one iteration.
+1. **Run validations**: execute the project's test and lint commands (see Commands section above).
+   If any check fails → fix the issue, print `🔄 Review loop iteration N/3...`, and re-run.
 
-2. Review your own changes by reading the diff (`git diff`) and evaluating:
+2. **Review your own diff** (`git diff`) and evaluate:
    - **Correctness**: does the code do what was requested?
    - **Tests**: are new behaviors covered by tests?
    - **Invariants**: are rules in `docs/invariants/INVARIANTS.md` respected?
@@ -74,9 +76,9 @@ After completing ANY code change in `src/`, you MUST execute this loop before re
 
 3. If you find real issues (bugs, missing tests, violated invariants, security problems) → fix them and go back to step 1.
 
-4. If no real issues remain → the loop is done. Proceed to report or commit.
+4. When the loop is done, print: `✅ Review loop passed` and then report to the user.
 
-**Max iterations: 3.** If after 3 iterations there are still issues, stop and report them to the user.
+**Max iterations: 3.** If after 3 iterations there are still issues, print `⚠️ Review loop: issues remain after 3 iterations` and report them to the user.
 
 ## Restrictions
 - NEVER commit credentials or .env
