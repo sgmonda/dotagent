@@ -55,6 +55,8 @@ your-project/
 │   └── VERSION                 # Installed version
 ├── .agent → .dotagent/agent    # Symlink (for agent tools)
 ├── .claude/skills → …          # Symlink (for Claude Code)
+├── AGENTS.md → .dotagent/…     # Symlink (project-wide agent rules)
+├── docs → .dotagent/docs       # Symlink (ADRs, invariants)
 └── ...
 ```
 
@@ -73,7 +75,7 @@ Supported stacks: **Python + FastAPI** · **Go + Gin** · **TypeScript + Node** 
 > The `/dotagent-onboard` skill may be automatically loaded by your agent on startup or when addressing a complex task. It can also be invoked manually at any time.
 
 > [!TIP]
-> **Updating:** Run `bash .dotagent/update.sh` to fetch the latest skills and configuration, then ask your agent to run `/dotagent-upgrade`.
+> **Updating:** Just ask your agent to run `/dotagent-upgrade`. It will fetch the latest version and apply any spec changes automatically.
 
 ## Repository Structure
 
