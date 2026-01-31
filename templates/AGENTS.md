@@ -1,14 +1,8 @@
 # AGENTS.md
 
-<!-- DOTAGENT:BEGIN — managed by dotagent, do not edit manually -->
-
 > **SESSION START**
 >
-> Before any task, run:
-> ```bash
-> git status --short && git log --oneline -1
-> {TEST_COMMAND} 2>&1 | tail -3
-> ```
+> Before any task, run your project's test command and check git status.
 > - If there are pending changes → inform the user
 > - If there are failing tests → inform before starting
 > - If the task is complex or the project is unknown → run `dotagent-onboard` skill
@@ -52,6 +46,8 @@ src/
 {INCORRECT_DATA_EXAMPLE}
 ```
 
+<!-- DOTAGENT:BEGIN — managed by dotagent, do not edit manually -->
+
 ## Mandatory TDD
 
 For all code in `src/`:
@@ -65,10 +61,7 @@ For all code in `src/`:
 After completing ANY code change in `src/`, you MUST execute this loop before reporting the task as done. Do NOT skip this. Do NOT ask the user whether to run it. Just do it.
 
 ### Steps
-1. Run validations:
-   ```bash
-   {TEST_COMMAND} && {LINT_COMMAND}
-   ```
+1. Run validations: execute the project's test and lint commands (see Commands section above).
    If any required check fails → fix the issue and re-run. This counts as one iteration.
 
 2. Review your own changes by reading the diff (`git diff`) and evaluating:
@@ -87,12 +80,12 @@ After completing ANY code change in `src/`, you MUST execute this loop before re
 
 ## Restrictions
 - NEVER commit credentials or .env
-- NEVER modify {CRITICAL_FILES} without confirmation
+- NEVER modify critical infrastructure files without confirmation
 - NEVER delete passing tests
 
 ## Diagnostics
-1. Run `{LINT_COMMAND}`
-2. Run `{TEST_COMMAND}`
+1. Run the project's lint command
+2. Run the project's test command
 3. Review `docs/architecture/` if there are design questions
 
 <!-- DOTAGENT:END -->
