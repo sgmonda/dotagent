@@ -1,5 +1,7 @@
 # AGENTS.md
 
+<!-- DOTAGENT:BEGIN — managed by dotagent, do not edit manually -->
+
 > **SESSION START — Read this entire file carefully before doing anything.**
 >
 > You MUST follow ALL rules in this file for every task. Key obligations:
@@ -49,8 +51,6 @@ src/
 // ❌ Incorrect: direct connections
 {INCORRECT_DATA_EXAMPLE}
 ```
-
-<!-- DOTAGENT:BEGIN — managed by dotagent, do not edit manually -->
 
 ## Mandatory TDD
 
